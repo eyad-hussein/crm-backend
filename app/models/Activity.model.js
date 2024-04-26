@@ -1,23 +1,16 @@
 const { DataTypes } = require("sequelize");
-const db = require("../database/init");
-const ActivityType = require("../enums/ActivityType.enum");
-const CustomerModel = require("./Customer.model");
+const db = require("../database/MySQL.database");
+const { ActivityType } = require("../enums/init");
 
-const ActivityModel = db.define("activities", {
+const Activity = db.define("activities", {
   activity_type: {
     type: DataTypes.ENUM,
-    values: ActivityType,
+    values: ActivityType.values,
+    defaultValue: ActivityType.defaultValue,
   },
   description: {
     type: DataTypes.TEXT,
   },
-  customer_id: {
-    type: DataTypes.INTEGER,
-    references: {
-      model: CustomerModel,
-      key: "id",
-    },
-  },
 });
 
-module.exports = ActivityModel;
+module.exports = Activity;

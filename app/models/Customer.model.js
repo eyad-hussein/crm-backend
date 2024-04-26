@@ -1,13 +1,7 @@
-const db = require("../database/init");
+const db = require("../database/MySQL.database");
 const { DataTypes } = require("sequelize");
-const { AccountModel, AddressModel } = require("./init");
 
-const CustomerModel = db.define("customers", {
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-  },
+const Customer = db.define("customers", {
   first_name: {
     type: DataTypes.STRING,
   },
@@ -37,20 +31,6 @@ const CustomerModel = db.define("customers", {
   priority: {
     type: DataTypes.INTEGER,
   },
-  account_id: {
-    type: DataTypes.INTEGER,
-    references: {
-      model: AccountModel,
-      key: "id",
-    },
-  },
-  address_id: {
-    type: DataTypes.INTEGER,
-    references: {
-      model: AddressModel,
-      key: "id",
-    },
-  },
 });
 
-module.exports = CustomerModel;
+module.exports = Customer;

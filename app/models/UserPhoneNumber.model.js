@@ -1,10 +1,9 @@
 const { DataTypes } = require("sequelize");
 
-const db = require("../database/init");
+const db = require("../database/MySQL.database");
 const { PhoneNumberType } = require("../enums/init");
-const { UserModel } = require("./init");
 
-const UserPhoneNumberModel = db.define("user_phone_numbers", {
+const UserPhoneNumber = db.define("user_phone_numbers", {
   phone_number: {
     type: DataTypes.STRING,
   },
@@ -13,15 +12,9 @@ const UserPhoneNumberModel = db.define("user_phone_numbers", {
   },
   type_of_number: {
     type: DataTypes.ENUM,
-    values: PhoneNumberType,
-  },
-  user_id: {
-    type: DataTypes.INTEGER,
-    references: {
-      model: UserModel,
-      key: "id",
-    },
+    values: PhoneNumberType.values,
+    defaultValue: PhoneNumberType.defaultValue,
   },
 });
 
-module.exports = UserPhoneNumberModel;
+module.exports = UserPhoneNumber;

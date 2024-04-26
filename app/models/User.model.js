@@ -1,8 +1,8 @@
 const { DataTypes } = require("sequelize");
 
-const db = require("../database/init");
+const db = require("../database/MySQL.database");
 
-const UserModel = db.define("users", {
+const User = db.define("users", {
   first_name: {
     type: DataTypes.STRING,
   },
@@ -18,15 +18,12 @@ const UserModel = db.define("users", {
     unique: true,
   },
   password: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: false,
   },
   title: {
     type: DataTypes.STRING,
   },
-  manager_id: {
-    type: DataTypes.INTEGER,
-  },
 });
 
-module.exports = UserModel;
+module.exports = User;

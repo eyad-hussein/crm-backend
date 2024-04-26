@@ -1,25 +1,18 @@
-const db = require("../database/init");
+const db = require("../database/MySQL.database");
 const { DataTypes } = require("sequelize");
-const { CustomerModel } = require("./init");
 const { LeadSourceType, LeadStatusType } = require("../enums/init");
 
-const LeadModel = db.define("leads", {
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    references: {
-      model: CustomerModel,
-      key: "id",
-    },
-  },
+const Lead = db.define("leads", {
   lead_status: {
     type: DataTypes.ENUM,
-    values: LeadStatusType,
+    values: LeadStatusType.values,
+    defaultValue: LeadStatusType.defaultValue,
   },
   lead_source: {
     type: DataTypes.ENUM,
-    values: LeadSourceType,
+    values: LeadSourceType.values,
+    defaultValue: LeadSourceType.defaultValue,
   },
 });
 
-module.exports = LeadModel;
+module.exports = Lead;

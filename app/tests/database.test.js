@@ -1,4 +1,4 @@
-const db = require("../database/init");
+const db = require("../database/MySQL.database");
 const { DataTypes } = require("sequelize");
 
 db.authenticate()

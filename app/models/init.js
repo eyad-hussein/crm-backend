@@ -1,29 +1,29 @@
-const AccountModel = require("./Account.model");
-const ActivityModel = require("./Activity.model");
-const AddressModel = require("./AddressModel.model");
-const CityModel = require("./CityModel.model");
-const ContactModel = require("./Contact.model");
-const CountryModel = require("./CountryModel.model");
-const CustomerModel = require("./Customer.model");
-const CustomerPhoneNumberModel = require("./CustomerPhoneNumber.model");
-const LeadModel = require("./Lead.model");
-const PostalCodeModel = require("./PostalCodeModel.model");
-const StateModel = require("./StateModel.model");
-const UserModel = require("./User.model");
-const UserPhoneNumberModel = require("./UserPhoneNumber.model");
+const Account = require("./Account.model");
+const Activity = require("./Activity.model");
+const Address = require("./Address.model");
+const City = require("./City.model");
+const Contact = require("./Contact.model");
+const Country = require("./Country.model");
+const Customer = require("./Customer.model");
+const CustomerPhoneNumber = require("./CustomerPhoneNumber.model");
+const Lead = require("./Lead.model");
+const PostalCode = require("./PostalCode.model");
+const State = require("./State.model");
+const User = require("./User.model");
+const UserPhoneNumber = require("./UserPhoneNumber.model");
 
 module.exports = {
-  CustomerModel,
-  LeadModel,
-  UserModel,
-  ContactModel,
-  CustomerPhoneNumberModel,
-  UserPhoneNumberModel,
-  ActivityModel,
-  CountryModel,
-  StateModel,
-  PostalCodeModel,
-  CityModel,
-  AccountModel,
-  AddressModel,
+  Customer,
+  Lead,
+  User,
+  Contact,
+  CustomerPhoneNumber,
+  UserPhoneNumber,
+  Activity,
+  Country,
+  State,
+  PostalCode,
+  City,
+  Account,
+  Address,
 };

@@ -1,15 +1,16 @@
 const { DataTypes } = require("sequelize");
-const db = require("../database/init");
-const IndustryType = require("../enums/IndustryType.enum");
+const db = require("../database/MySQL.database");
+const { IndustryType } = require("../enums/init");
 
-const AccountModel = db.define("accounts", {
+const Account = db.define("accounts", {
   account_name: {
     type: DataTypes.STRING,
   },
   industry: {
     type: DataTypes.ENUM,
-    values: IndustryType,
+    values: IndustryType.values,
+    defaultValue: IndustryType.defaultValue,
   },
 });
 
-module.exports = AccountModel;
+module.exports = Account;
