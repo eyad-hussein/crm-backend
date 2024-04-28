@@ -1,5 +1,5 @@
 const { DataTypes } = require("sequelize");
-const db = require("../database/MySQL.database");
+const db = require("../db/MySQL.database");
 const { ActivityType } = require("../enums/init");
 
 const Activity = db.define("activities", {

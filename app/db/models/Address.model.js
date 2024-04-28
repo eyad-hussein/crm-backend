@@ -1,6 +1,6 @@
 const { DataTypes } = require("sequelize");
-const db = require("../database/MySQL.database");
-const { AddressType } = require("../enums/init");
+const db = require("../MySQL.database");
+const { AddressType } = require("../../enums/init");
 
 const Address = db.define("addresses", {
   address_type: {

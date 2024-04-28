@@ -1,4 +1,4 @@
-const db = require("../database/MySQL.database");
+const db = require("../db/MySQL.database");
 const { DataTypes } = require("sequelize");
 const { LeadSourceType, LeadStatusType } = require("../enums/init");
 

@@ -1,5 +1,5 @@
 const { DataTypes } = require("sequelize");
-const db = require("../database/MySQL.database");
+const db = require("../db/MySQL.database");
 const { IndustryType } = require("../enums/init");
 
 const Account = db.define("accounts", {

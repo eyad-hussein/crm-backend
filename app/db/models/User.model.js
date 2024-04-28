@@ -1,7 +1,8 @@
-const db = require("../database/MySQL.database");
 const { DataTypes } = require("sequelize");
 
-const Customer = db.define("customers", {
+const db = require("../db/MySQL.database");
+
+const User = db.define("users", {
   first_name: {
     type: DataTypes.STRING,
   },
@@ -12,25 +13,17 @@ const Customer = db.define("customers", {
     type: DataTypes.STRING,
     unique: true,
   },
-  title: {
-    type: DataTypes.STRING,
-  },
   email: {
     type: DataTypes.STRING,
     unique: true,
   },
-  marketing_objective: {
+  password: {
     type: DataTypes.STRING,
+    allowNull: false,
   },
-  package_selected: {
+  title: {
     type: DataTypes.STRING,
-  },
-  service: {
-    type: DataTypes.STRING,
-  },
-  priority: {
-    type: DataTypes.INTEGER,
   },
 });
 
-module.exports = Customer;
+module.exports = User;

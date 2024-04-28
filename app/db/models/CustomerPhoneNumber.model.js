@@ -1,6 +1,6 @@
 const { DataTypes } = require("sequelize");
 
-const db = require("../database/MySQL.database");
+const db = require("../db/MySQL.database");
 const { PhoneNumberType } = require("../enums/init");
 
 const CustomerPhoneNumber = db.define("customer_phone_numbers", {
