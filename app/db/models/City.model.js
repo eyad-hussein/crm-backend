@@ -1,10 +1,29 @@
-const { DataTypes } = require("sequelize");
-const db = require("../db/MySQL.database");
-
-const City = db.define("cities", {
-  city_name: {
-    type: DataTypes.STRING,
-  },
-});
-
-module.exports = City;
+"use strict";
+const { Model } = require("sequelize");
+module.exports = (sequelize, DataTypes) => {
+  class City extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      // define association here
+      City.hasMany(models.Address, {
+        foreignKey: "city_id",
+      });
+    }
+  }
+  City.init(
+    {
+      city_name: DataTypes.STRING,
+    },
+    {
+      sequelize,
+      modelName: "City",
+      tableName: "cities",
+      underscored: true,
+    }
+  );
+  return City;
+};
