@@ -1,5 +1,6 @@
 "use strict";
 const { Model } = require("sequelize");
+const { SubscriptionStatusType } = require("../../enums");
 module.exports = (sequelize, DataTypes) => {
   class Contact extends Model {
     /**
@@ -21,7 +22,11 @@ module.exports = (sequelize, DataTypes) => {
   }
   Contact.init(
     {
-      subscription_status: DataTypes.ENUM,
+      subscription_status: {
+        type: DataTypes.ENUM,
+        values: SubscriptionStatusType.values,
+        defaultValue: SubscriptionStatusType.defaultValue,
+      },
     },
     {
       sequelize,

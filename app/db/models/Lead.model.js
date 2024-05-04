@@ -1,5 +1,6 @@
 "use strict";
 const { Model } = require("sequelize");
+const { LeadStatusType } = require("../../enums");
 module.exports = (sequelize, DataTypes) => {
   class Lead extends Model {
     /**
@@ -20,8 +21,11 @@ module.exports = (sequelize, DataTypes) => {
   }
   Lead.init(
     {
-      lead_status: DataTypes.ENUM,
-      lead_source: DataTypes.ENUM,
+      lead_status: {
+        type: DataTypes.ENUM,
+        values: LeadStatusType.values,
+        defaultValue: LeadStatusType.defaultValue,
+      },
     },
     {
       sequelize,

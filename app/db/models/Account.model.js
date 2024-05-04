@@ -1,5 +1,6 @@
 "use strict";
 const { Model } = require("sequelize");
+const { IndustryType } = require("../../enums/index");
 module.exports = (sequelize, DataTypes) => {
   class Account extends Model {
     /**
@@ -11,17 +12,16 @@ module.exports = (sequelize, DataTypes) => {
       Account.hasOne(models.Customer, {
         foreignKey: "account_id",
       });
-
-      // Association with CustomerPhoneNumber model
-      Account.hasMany(models.CustomerPhoneNumber, {
-        foreignKey: "account_id",
-      });
     }
   }
   Account.init(
     {
       account_name: DataTypes.STRING,
-      industry: DataTypes.ENUM,
+      industry: {
+        type: DataTypes.ENUM,
+        values: IndustryType.values,
+        defaultValue: IndustryType.defaultValue,
+      },
     },
     {
       sequelize,

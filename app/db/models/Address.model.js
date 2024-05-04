@@ -1,5 +1,6 @@
 "use strict";
 const { Model } = require("sequelize");
+const { AddressType } = require("../../enums");
 module.exports = (sequelize, DataTypes) => {
   class Address extends Model {
     /**
@@ -28,7 +29,11 @@ module.exports = (sequelize, DataTypes) => {
   }
   Address.init(
     {
-      address_type: DataTypes.ENUM,
+      address_type: {
+        type: DataTypes.ENUM,
+        values: AddressType.values,
+        defaultValue: AddressType.defaultValue,
+      },
     },
     {
       sequelize,

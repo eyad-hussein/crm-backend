@@ -1,8 +1,32 @@
-// const Customer = require("../db/models/Customer.model");
-// const asyncHandler = require("express-async-handler");
+const {
+  Customer,
+  CustomerPhoneNumber,
+  User,
+  Account,
+  Service,
+} = require("../db/models");
 
-// const getCustomers = asyncHandler(async (req, res, next) => {
-//   res.json(await Customer.find({}, 'first_name last_name priority '));
-// });
+const asyncHandler = require("express-async-handler");
 
-// const
+const getCustomers = asyncHandler(async (req, res, next) => {
+  const customers = await Customer.findAll({
+    attributes: ["id", "first_name", "last_name", "email"],
+    include: [
+      {
+        model: CustomerPhoneNumber,
+      },
+      {
+        model: User,
+        attributes: ["first_name"],
+      },
+      { model: Account },
+      { model: Service },
+    ],
+  });
+
+  res.json(customers);
+});
+
+module.exports = {
+  getCustomers,
+};

@@ -1,5 +1,6 @@
 "use strict";
 const { Model } = require("sequelize");
+const { ActivityType } = require("../../enums");
 module.exports = (sequelize, DataTypes) => {
   class Activity extends Model {
     /**
@@ -15,7 +16,11 @@ module.exports = (sequelize, DataTypes) => {
   }
   Activity.init(
     {
-      activity_type: DataTypes.ENUM,
+      activity_type: {
+        type: DataTypes.ENUM,
+        values: ActivityType.values,
+        defaultValue: ActivityType.defaultValue,
+      },
       description: DataTypes.TEXT,
     },
     {

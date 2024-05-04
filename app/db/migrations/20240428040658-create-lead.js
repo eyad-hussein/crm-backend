@@ -1,6 +1,6 @@
 "use strict";
 
-const { LeadStatusType, LeadSourceType } = require("../../enums/index");
+const { LeadStatusType } = require("../../enums/index");
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -16,11 +16,6 @@ module.exports = {
         type: Sequelize.ENUM,
         values: LeadStatusType.values,
         defaultValue: LeadStatusType.defaultValue,
-      },
-      lead_source: {
-        type: Sequelize.ENUM,
-        values: LeadSourceType.values,
-        defaultValue: LeadSourceType.defaultValue,
       },
       customer_id: {
         type: Sequelize.INTEGER,

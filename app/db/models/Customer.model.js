@@ -32,8 +32,12 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "customer_id",
       });
       Customer.belongsToMany(models.Service, {
-        through: "cutomer_services",
+        through: "customer_services",
         foreignKey: "customer_id",
+      });
+
+      Customer.belongsTo(models.User, {
+        foreignKey: "user_id",
       });
     }
   }
@@ -49,6 +53,7 @@ module.exports = (sequelize, DataTypes) => {
       service: DataTypes.STRING,
       priority: DataTypes.INTEGER,
       follow_up_date: DataTypes.DATE,
+      user_id: DataTypes.INTEGER,
     },
     {
       sequelize,
