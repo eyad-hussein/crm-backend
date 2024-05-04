@@ -14,6 +14,9 @@ module.exports = (sequelize, DataTypes) => {
       Contact.belongsTo(models.User, {
         foreignKey: "user_id",
       });
+      Contact.hasMany(models.Proposal, {
+        foreignKey: "id",
+      });
     }
   }
   Contact.init(
