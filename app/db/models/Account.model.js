@@ -1,16 +1,34 @@
-const { DataTypes } = require("sequelize");
-const db = require("../db/MySQL.database");
-const { IndustryType } = require("../enums/init");
+"use strict";
+const { Model } = require("sequelize");
+module.exports = (sequelize, DataTypes) => {
+  class Account extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      Account.hasOne(models.Customer, {
+        foreignKey: "account_id",
+      });
 
-const Account = db.define("accounts", {
-  account_name: {
-    type: DataTypes.STRING,
-  },
-  industry: {
-    type: DataTypes.ENUM,
-    values: IndustryType.values,
-    defaultValue: IndustryType.defaultValue,
-  },
-});
-
-module.exports = Account;
+      // Association with CustomerPhoneNumber model
+      Account.hasMany(models.CustomerPhoneNumber, {
+        foreignKey: "account_id",
+      });
+    }
+  }
+  Account.init(
+    {
+      account_name: DataTypes.STRING,
+      industry: DataTypes.ENUM,
+    },
+    {
+      sequelize,
+      modelName: "Account",
+      tableName: "accounts",
+      underscored: true,
+    }
+  );
+  return Account;
+};

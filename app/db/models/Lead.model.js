@@ -1,18 +1,34 @@
-const db = require("../db/MySQL.database");
-const { DataTypes } = require("sequelize");
-const { LeadSourceType, LeadStatusType } = require("../enums/init");
+"use strict";
+const { Model } = require("sequelize");
+module.exports = (sequelize, DataTypes) => {
+  class Lead extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      // define association here
+      Lead.belongsTo(models.Customer, {
+        foreignKey: "customer_id",
+      });
 
-const Lead = db.define("leads", {
-  lead_status: {
-    type: DataTypes.ENUM,
-    values: LeadStatusType.values,
-    defaultValue: LeadStatusType.defaultValue,
-  },
-  lead_source: {
-    type: DataTypes.ENUM,
-    values: LeadSourceType.values,
-    defaultValue: LeadSourceType.defaultValue,
-  },
-});
-
-module.exports = Lead;
+      Lead.hasOne(models.Contact, {
+        foreignKey: "lead_id",
+      });
+    }
+  }
+  Lead.init(
+    {
+      lead_status: DataTypes.ENUM,
+      lead_source: DataTypes.ENUM,
+    },
+    {
+      sequelize,
+      modelName: "Lead",
+      tableName: "leads",
+      underscored: true,
+    }
+  );
+  return Lead;
+};

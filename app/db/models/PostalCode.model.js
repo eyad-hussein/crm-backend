@@ -1,10 +1,29 @@
-const { DataTypes } = require("sequelize");
-const db = require("../db/MySQL.database");
-
-const PostalCode = db.define("postal_codes", {
-  postal_code: {
-    type: DataTypes.STRING,
-  },
-});
-
-module.exports = PostalCode;
+"use strict";
+const { Model } = require("sequelize");
+module.exports = (sequelize, DataTypes) => {
+  class PostalCode extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      // define association here
+      PostalCode.hasMany(models.Address, {
+        foreignKey: "postal_code_id",
+      });
+    }
+  }
+  PostalCode.init(
+    {
+      postal_code: DataTypes.STRING,
+    },
+    {
+      sequelize,
+      modelName: "PostalCode",
+      tableName: "postal_codes",
+      underscored: true,
+    }
+  );
+  return PostalCode;
+};
