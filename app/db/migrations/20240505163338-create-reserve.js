@@ -1,24 +1,22 @@
 "use strict";
-
-const { ServiceType } = require("../../enums");
-
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("services", {
+    await queryInterface.createTable("reserves", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      service_name: {
-        type: Sequelize.ENUM,
-        values: ServiceType.values,
-        defaultValue: ServiceType.defaultValue,
-      },
-      service_cost: {
-        type: Sequelize.DOUBLE,
+      customer_id: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "customers",
+          key: "id",
+        },
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
       },
       created_at: {
         allowNull: false,
@@ -33,6 +31,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("services");
+    await queryInterface.dropTable("reserves");
   },
 };

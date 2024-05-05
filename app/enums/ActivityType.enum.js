@@ -1,5 +1,5 @@
 const ActivityType = {
-  values: ["task", "chat"],
+  values: ["note", "chat"],
   defaultValue: null,
 };
 

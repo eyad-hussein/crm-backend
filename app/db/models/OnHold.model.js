@@ -1,30 +1,29 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class City extends Model {
+  class OnHold extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
-      City.hasMany(models.Address, {
-        foreignKey: "city_id",
-        as: "addresses",
+      OnHold.belongsTo(models.Customer, {
+        foreignKey: "customer_id",
+        as: "on_hold",
       });
     }
   }
-  City.init(
+  OnHold.init(
     {
-      city_name: DataTypes.STRING,
+      customer_id: DataTypes.INTEGER,
     },
     {
       sequelize,
-      modelName: "City",
-      tableName: "cities",
+      modelName: "OnHold",
+      tableName: "on_holds",
       underscored: true,
     }
   );
-  return City;
+  return OnHold;
 };

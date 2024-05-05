@@ -1,5 +1,6 @@
 "use strict";
 const { Model } = require("sequelize");
+const { ServiceType } = require("../../enums");
 module.exports = (sequelize, DataTypes) => {
   class Service extends Model {
     /**
@@ -9,18 +10,18 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       Service.belongsToMany(models.Customer, {
-        through: "cutomer_services",
-        foreignKey: "service_id",
-      });
-      Service.belongsToMany(models.Proposal, {
-        through: "proposal_services",
+        through: "customer_services",
         foreignKey: "service_id",
       });
     }
   }
   Service.init(
     {
-      service_name: DataTypes.STRING,
+      service_name: {
+        type: DataTypes.ENUM,
+        values: ServiceType.values,
+        defaultValue: ServiceType.defaultValue,
+      },
       service_cost: DataTypes.DOUBLE,
     },
     {

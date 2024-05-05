@@ -1,53 +1,36 @@
 "use strict";
-
-const { SubscriptionStatusType } = require("../../enums/index");
-
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("contacts", {
+    await queryInterface.createTable("clients", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      subscription_status: {
-        type: Sequelize.ENUM,
-        values: SubscriptionStatusType.values,
-        defaultValue: SubscriptionStatusType.defaultValue,
-      },
-      lead_id: {
+      customer_id: {
         type: Sequelize.INTEGER,
-        allowNull: false,
         references: {
-          model: "leads",
+          model: "customers",
           key: "id",
         },
-        onUpdate: "CASCADE",
         onDelete: "CASCADE",
-      },
-      user_id: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: "users",
-          key: "id",
-        },
         onUpdate: "CASCADE",
-        onDelete: "CASCADE",
       },
       created_at: {
         allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
       updated_at: {
         allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("contacts");
+    await queryInterface.dropTable("clients");
   },
 };

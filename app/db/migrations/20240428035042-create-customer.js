@@ -1,4 +1,7 @@
 "use strict";
+
+const { StateType } = require("../../enums");
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -32,14 +35,19 @@ module.exports = {
       package_selected: {
         type: Sequelize.STRING,
       },
-      service: {
-        type: Sequelize.STRING,
-      },
       priority: {
         type: Sequelize.INTEGER,
       },
+      description: {
+        type: Sequelize.TEXT,
+      },
       follow_up_date: {
         type: Sequelize.DATE,
+      },
+      state: {
+        type: Sequelize.ENUM,
+        values: StateType.values,
+        defaultValue: StateType.defaultValue,
       },
       account_id: {
         type: Sequelize.INTEGER,
@@ -63,10 +71,12 @@ module.exports = {
       created_at: {
         allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
       updated_at: {
         allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
     });
   },

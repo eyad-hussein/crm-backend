@@ -1,4 +1,4 @@
-const customersRouter = require("./customers.routes");
+const customersRouter = require("./Customers.routes");
 
 module.exports = {
   customersRouter,

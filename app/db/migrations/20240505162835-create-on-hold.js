@@ -2,26 +2,17 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("proposal_services", {
+    await queryInterface.createTable("on_holds", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      service_id: {
+      customer_id: {
         type: Sequelize.INTEGER,
         references: {
-          model: "services",
-          key: "id",
-        },
-        onDelete: "CASCADE",
-        onUpdate: "CASCADE",
-      },
-      proposal_id: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: "proposals",
+          model: "customers",
           key: "id",
         },
         onDelete: "CASCADE",
@@ -30,14 +21,16 @@ module.exports = {
       created_at: {
         allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
       updated_at: {
         allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("proposal_services");
+    await queryInterface.dropTable("on_holds");
   },
 };

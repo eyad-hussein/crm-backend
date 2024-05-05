@@ -8,19 +8,15 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Proposal.belongsTo(models.Contact, {
-        foreignKey: "id",
-      });
-      Proposal.belongsToMany(models.Service, {
-        through: "proposal_services",
-        foreignKey: "proposal_id",
+      Proposal.belongsTo(models.Customer, {
+        foreignKey: "customer_id",
+        as: "proposal",
       });
     }
   }
   Proposal.init(
     {
-      proposal_title: DataTypes.STRING,
-      contact_id: DataTypes.INTEGER,
+      customer_id: DataTypes.INTEGER,
     },
     {
       sequelize,

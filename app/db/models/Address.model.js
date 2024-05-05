@@ -12,18 +12,23 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Address.belongsTo(models.City, {
         foreignKey: "city_id",
+        as: "city",
       });
       Address.belongsTo(models.State, {
         foreignKey: "state_id",
+        as: "state",
       });
       Address.belongsTo(models.Country, {
         foreignKey: "country_id",
+        as: "country",
       });
       Address.belongsTo(models.PostalCode, {
         foreignKey: "postal_code_id",
+        as: "postal_code",
       });
       Address.belongsTo(models.Customer, {
         foreignKey: "customer_id",
+        as: "customer",
       });
     }
   }
@@ -34,6 +39,10 @@ module.exports = (sequelize, DataTypes) => {
         values: AddressType.values,
         defaultValue: AddressType.defaultValue,
       },
+      city_id: DataTypes.STRING,
+      country_id: DataTypes.STRING,
+      state_id: DataTypes.STRING,
+      postal_code_id: DataTypes.STRING,
     },
     {
       sequelize,

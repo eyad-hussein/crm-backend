@@ -9,13 +9,10 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      proposal_title: {
-        type: Sequelize.STRING,
-      },
-      contact_id: {
+      customer_id: {
         type: Sequelize.INTEGER,
         references: {
-          model: "contacts",
+          model: "customers",
           key: "id",
         },
         onDelete: "CASCADE",
@@ -24,10 +21,12 @@ module.exports = {
       created_at: {
         allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
       updated_at: {
         allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
     });
   },

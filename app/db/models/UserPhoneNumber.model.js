@@ -23,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
         values: PhoneNumberType.values,
         defaultValue: PhoneNumberType.defaultValue,
       },
+      user_id: DataTypes.INTEGER,
     },
     {
       sequelize,
