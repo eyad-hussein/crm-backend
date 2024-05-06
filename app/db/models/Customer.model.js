@@ -41,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
 
       Customer.hasOne(models.OnHold, {
         foreignKey: "customer_id",
-        as: "customer",
+        as: "on_hold",
       });
     }
   }

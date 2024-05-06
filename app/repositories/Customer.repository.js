@@ -9,7 +9,6 @@ const models = require("../db/models");
 const { changeInputToModelName } = require("../utils/Parser.utils");
 
 const GET_CUSTOMER_QUERY = {
-  attributes: ["id", "first_name", "last_name", "email", "priority"],
   include: [
     {
       model: CustomerPhoneNumber,
@@ -17,7 +16,7 @@ const GET_CUSTOMER_QUERY = {
     },
     {
       model: User,
-      attributes: ["id", "first_name", "last_name"],
+      attributes: ["id", "first_name", "last_name", "title"],
       as: "user",
     },
     { model: Account, as: "account" },
@@ -30,7 +29,7 @@ const createCustomer = async (body) => {
   return customer;
 };
 
-const getCustomers = async (id) => {
+const getCustomers = async () => {
   return await Customer.findAll(GET_CUSTOMER_QUERY);
 };
 

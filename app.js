@@ -7,7 +7,11 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-const { customersRouter } = require("./app/routes");
+const {
+  customersRouter,
+  usersRouter,
+  accountsRouter,
+} = require("./app/routes");
 
 const db = require("./app/db/models/index");
 
@@ -21,6 +25,8 @@ const db = require("./app/db/models/index");
 })();
 
 app.use("/customers", customersRouter);
+app.use("/users", usersRouter);
+app.use("/accounts", accountsRouter);
 
 app.listen(5000, () => {
   console.log("Server started on port 5000");

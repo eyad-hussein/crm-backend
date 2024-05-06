@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       OnHold.belongsTo(models.Customer, {
         foreignKey: "customer_id",
-        as: "on_hold",
+        as: "customer",
       });
     }
   }

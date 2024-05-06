@@ -1,6 +1,6 @@
 const StateType = {
-  values: ["contact_on_hold", "reserve_list", "prospect", "client", "proposal"],
-  defaultValue: "reserve_list",
+  values: ["on_hold", "reserve", "prospect", "client", "proposal"],
+  defaultValue: "reserve",
 };
 
 module.exports = StateType;

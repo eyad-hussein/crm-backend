@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       UserPhoneNumber.belongsTo(models.User, {
         foreignKey: "user_id",
+        as: "user",
       });
     }
   }

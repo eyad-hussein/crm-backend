@@ -13,19 +13,24 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       first_name: {
+        allowNull: false,
         type: Sequelize.STRING,
       },
       last_name: {
+        allowNull: false,
         type: Sequelize.STRING,
       },
       user_name: {
+        allowNull: false,
         type: Sequelize.STRING,
         unique: true,
       },
       title: {
+        allowNull: false,
         type: Sequelize.STRING,
       },
       email: {
+        allowNull: false,
         type: Sequelize.STRING,
         unique: true,
       },
@@ -60,6 +65,7 @@ module.exports = {
         onDelete: "CASCADE",
       },
       user_id: {
+        allowNull: false,
         type: Sequelize.INTEGER,
         references: {
           model: "users",

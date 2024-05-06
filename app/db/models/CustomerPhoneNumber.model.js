@@ -24,6 +24,7 @@ module.exports = (sequelize, DataTypes) => {
         values: PhoneNumberType.values,
         defaultValue: PhoneNumberType.defaultValue,
       },
+      customer_id: DataTypes.INTEGER,
     },
     {
       sequelize,
