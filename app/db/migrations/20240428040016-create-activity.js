@@ -1,6 +1,6 @@
 "use strict";
 
-const { ActivityType } = require("../../enums/index");
+const { ActivityType } = require("../../enums");
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -33,10 +33,12 @@ module.exports = {
       created_at: {
         allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
       updated_at: {
         allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
     });
   },

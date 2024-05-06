@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       City.hasMany(models.Address, {
         foreignKey: "city_id",
+        as: "addresses",
       });
     }
   }

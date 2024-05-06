@@ -1,34 +1,29 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Lead extends Model {
+  class Client extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
-      Lead.belongsTo(models.Customer, {
+      Client.belongsTo(models.Customer, {
         foreignKey: "customer_id",
-      });
-
-      Lead.hasOne(models.Contact, {
-        foreignKey: "lead_id",
+        as: "client",
       });
     }
   }
-  Lead.init(
+  Client.init(
     {
-      lead_status: DataTypes.ENUM,
-      lead_source: DataTypes.ENUM,
+      customer_id: DataTypes.INTEGER,
     },
     {
       sequelize,
-      modelName: "Lead",
-      tableName: "leads",
+      modelName: "Client",
+      tableName: "clients",
       underscored: true,
     }
   );
-  return Lead;
+  return Client;
 };

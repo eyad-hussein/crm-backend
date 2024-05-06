@@ -1,56 +1,49 @@
 "use strict";
+const { PhoneNumberType } = require("../../enums/index");
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("users", {
+    await queryInterface.createTable("customer_phone_numbers", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      first_name: {
+      phone_number: {
         type: Sequelize.STRING,
       },
-      last_name: {
+      extension: {
         type: Sequelize.STRING,
       },
-      user_name: {
-        type: Sequelize.STRING,
-        unique: true,
+      type_of_number: {
+        type: Sequelize.ENUM,
+        values: PhoneNumberType.values,
+        defaultValue: PhoneNumberType.defaultValue,
       },
-      email: {
-        type: Sequelize.STRING,
-        unique: true,
-      },
-      password: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      title: {
-        type: Sequelize.STRING,
-      },
-      manager_id: {
+      customer_id: {
         type: Sequelize.INTEGER,
-        allowNull: true,
+        allowNull: false,
         references: {
-          model: "users",
+          model: "customers",
           key: "id",
         },
         onUpdate: "CASCADE",
-        onDelete: "SET NULL",
+        onDelete: "CASCADE",
       },
       created_at: {
         allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
       updated_at: {
         allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("users");
+    await queryInterface.dropTable("customer_phone_numbers");
   },
 };

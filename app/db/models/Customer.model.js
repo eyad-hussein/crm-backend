@@ -1,5 +1,6 @@
 "use strict";
 const { Model } = require("sequelize");
+const { StateType } = require("../../enums");
 module.exports = (sequelize, DataTypes) => {
   class Customer extends Model {
     /**
@@ -10,30 +11,37 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Customer.belongsTo(models.Account, {
         foreignKey: "account_id",
-      });
-
-      Customer.hasOne(models.Lead, {
-        foreignKey: "customer_id",
-      });
-
-      Customer.hasMany(models.Contact, {
-        foreignKey: "customer_id",
+        as: "account",
       });
 
       Customer.hasMany(models.Activity, {
         foreignKey: "customer_id",
+        as: "activities",
       });
 
       Customer.hasMany(models.Address, {
         foreignKey: "customer_id",
+        as: "addresses",
       });
 
       Customer.hasMany(models.CustomerPhoneNumber, {
         foreignKey: "customer_id",
+        as: "customer_phone_numbers",
       });
       Customer.belongsToMany(models.Service, {
-        through: "cutomer_services",
+        through: "customer_services",
         foreignKey: "customer_id",
+        as: "services",
+      });
+
+      Customer.belongsTo(models.User, {
+        foreignKey: "user_id",
+        as: "user",
+      });
+
+      Customer.hasOne(models.OnHold, {
+        foreignKey: "customer_id",
+        as: "on_hold",
       });
     }
   }
@@ -46,9 +54,16 @@ module.exports = (sequelize, DataTypes) => {
       email: { type: DataTypes.STRING, unique: true },
       marketing_objective: DataTypes.STRING,
       package_selected: DataTypes.STRING,
-      service: DataTypes.STRING,
       priority: DataTypes.INTEGER,
+      description: DataTypes.TEXT,
       follow_up_date: DataTypes.DATE,
+      state: {
+        type: DataTypes.ENUM,
+        values: StateType.values,
+        defaultValue: StateType.defaultValue,
+      },
+      user_id: DataTypes.INTEGER,
+      account_id: DataTypes.INTEGER,
     },
     {
       sequelize,
