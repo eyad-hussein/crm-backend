@@ -8,6 +8,7 @@ const ActivityType = require("./ActivityType.enum");
 const CustomerStateType = require("./CustomerStateType.enum");
 const StateType = require("./StateType.enum");
 const ServiceType = require("./ServiceType.enum");
+const CountryType = require("./CountryType.enum");
 
 module.exports = {
   LeadStatusType,
@@ -20,4 +21,5 @@ module.exports = {
   CustomerStateType,
   StateType,
   ServiceType,
+  CountryType,
 };

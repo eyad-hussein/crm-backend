@@ -1,6 +1,6 @@
 "use strict";
 const { Model } = require("sequelize");
-const { StateType } = require("../../enums");
+const { StateType, LeadSourceType } = require("../../enums");
 module.exports = (sequelize, DataTypes) => {
   class Customer extends Model {
     /**
@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Customer.belongsTo(models.Account, {
         foreignKey: "account_id",
-        as: "account",
+      as: "account",
       });
 
       Customer.hasMany(models.Activity, {
@@ -43,6 +43,16 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "customer_id",
         as: "on_hold",
       });
+
+      Customer.hasOne(models.Reserve, {
+        foreignKey: "customer_id",
+        as: "reserve",
+      });
+
+      Customer.belongsTo(models.Country, {
+        foreignKey: "country_id",
+        as: "country",
+      });
     }
   }
   Customer.init(
@@ -62,6 +72,12 @@ module.exports = (sequelize, DataTypes) => {
         values: StateType.values,
         defaultValue: StateType.defaultValue,
       },
+      lead_source: {
+        type: DataTypes.ENUM,
+        values: LeadSourceType.values,
+        defaultValue: LeadSourceType.defaultValue,
+      },
+      country_id: DataTypes.INTEGER,
       user_id: DataTypes.INTEGER,
       account_id: DataTypes.INTEGER,
     },

@@ -4,10 +4,9 @@ const reserveRepository = require("./Reserve.repository");
 const prospectRepository = require("./Prospect.repository");
 const clientRepository = require("./Client.repository");
 const proposalRepository = require("./Proposal.repository");
-
 const userRepository = require("./User.repository");
-
 const accountRepository = require("./Account.repository");
+const countryRepository = require("./Country.repository");
 
 module.exports = {
   customerRepository,
@@ -16,8 +15,7 @@ module.exports = {
   prospectRepository,
   clientRepository,
   proposalRepository,
-
   userRepository,
-
   accountRepository,
+  countryRepository,
 };

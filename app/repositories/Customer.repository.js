@@ -1,28 +1,7 @@
-const {
-  Customer,
-  CustomerPhoneNumber,
-  User,
-  Account,
-  Service,
-} = require("../db/models");
+const { Customer } = require("../db/models");
 const models = require("../db/models");
+const { GET_CUSTOMER_QUERY } = require("./queries");
 const { changeInputToModelName } = require("../utils/Parser.utils");
-
-const GET_CUSTOMER_QUERY = {
-  include: [
-    {
-      model: CustomerPhoneNumber,
-      as: "customer_phone_numbers",
-    },
-    {
-      model: User,
-      attributes: ["id", "first_name", "last_name", "title"],
-      as: "user",
-    },
-    { model: Account, as: "account" },
-    { model: Service, as: "services" },
-  ],
-};
 
 const createCustomer = async (body) => {
   const customer = await Customer.create(body);

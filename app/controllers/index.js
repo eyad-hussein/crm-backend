@@ -4,9 +4,9 @@ const reserveController = require("./Reserve.controller");
 const prospectController = require("./Prospect.controller");
 const clientController = require("./Client.controller");
 const proposalController = require("./Proposal.controller");
-
 const userController = require("./User.controller");
 const accountController = require("./Account.controller");
+const countryController = require("./Country.controller");
 
 module.exports = {
   customerController,
@@ -15,7 +15,7 @@ module.exports = {
   prospectController,
   clientController,
   proposalController,
-
   userController,
   accountController,
+  countryController,
 };
