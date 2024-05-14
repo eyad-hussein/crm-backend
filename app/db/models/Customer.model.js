@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Customer.belongsTo(models.Account, {
         foreignKey: "account_id",
-      as: "account",
+        as: "account",
       });
 
       Customer.hasMany(models.Activity, {
@@ -39,14 +39,29 @@ module.exports = (sequelize, DataTypes) => {
         as: "user",
       });
 
-      Customer.hasOne(models.OnHold, {
+      Customer.hasOne(models.FollowUp, {
         foreignKey: "customer_id",
-        as: "on_hold",
+        as: "follow_up",
       });
 
-      Customer.hasOne(models.Reserve, {
+      Customer.hasOne(models.Closure, {
         foreignKey: "customer_id",
-        as: "reserve",
+        as: "closure",
+      });
+
+      Customer.hasOne(models.Prospect, {
+        foreignKey: "customer_id",
+        as: "prospect",
+      });
+
+      Customer.hasOne(models.Contact, {
+        foreignKey: "customer_id",
+        as: "contact",
+      });
+
+      Customer.hasOne(models.Proposal, {
+        foreignKey: "customer_id",
+        as: "proposal",
       });
 
       Customer.belongsTo(models.Country, {

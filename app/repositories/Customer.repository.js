@@ -17,22 +17,33 @@ const getCustomerById = async (id) => {
 };
 
 const patchCustomer = async (id, body) => {
+  try {
+    console.log("patching customer, repository");
+    const customer = await Customer.findByPk(id);
+    console.log(body, id);
+    await customer.update(body);
+
+    const associations = Customer.associations;
+
+    for (const association of Object.keys(associations)) {
+      if (body[association]) {
+        const modelName = changeInputToModelName(association);
+        await models[modelName].update(body[association], {
+          where: {
+            id: body[association]["id"],
+          },
+        });
+      }
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
+const putCustomer = async (id, body) => {
   const customer = await Customer.findByPk(id);
 
   await customer.update(body);
-
-  const associations = Customer.associations;
-
-  for (const association of Object.keys(associations)) {
-    if (body[association]) {
-      const modelName = changeInputToModelName(association);
-      await models[modelName].update(body[association], {
-        where: {
-          id: body[association]["id"],
-        },
-      });
-    }
-  }
 };
 
 const deleteCustomer = async (id) => {
@@ -47,6 +58,7 @@ module.exports = {
   getCustomers,
   getCustomerById,
   patchCustomer,
+  putCustomer,
   deleteCustomer,
   createCustomer,
 };

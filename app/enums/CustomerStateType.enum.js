@@ -1,10 +1,10 @@
 const CustomerStateType = {
   CUSTOMER: "customer",
-  ON_HOLD: "on_hold",
-  RESERVE: "reserve",
   PROSPECT: "prospect",
-  CLIENT: "client",
+  CONTACT: "contact",
+  FOLLOW_UP: "follow_up",
   PROPSAL: "proposal",
+  CLOSURE: "closure",
 };
 
 module.exports = CustomerStateType;
