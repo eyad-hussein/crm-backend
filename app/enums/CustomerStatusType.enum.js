@@ -1,4 +1,4 @@
-const CustomerStateType = {
+const CustomerStatusType = {
   CUSTOMER: "customer",
   PROSPECT: "prospect",
   CONTACT: "contact",
@@ -7,4 +7,4 @@ const CustomerStateType = {
   CLOSURE: "closure",
 };
 
-module.exports = CustomerStateType;
+module.exports = CustomerStatusType;

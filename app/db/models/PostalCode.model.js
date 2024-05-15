@@ -12,6 +12,11 @@ module.exports = (sequelize, DataTypes) => {
       PostalCode.hasMany(models.Address, {
         foreignKey: "postal_code_id",
       });
+
+      PostalCode.hasOne(models.Customer, {
+        foreignKey: "postal_code_id",
+        as: "customer",
+      });
     }
   }
   PostalCode.init(

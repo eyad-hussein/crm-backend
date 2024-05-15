@@ -23,6 +23,8 @@ module.exports = (sequelize, DataTypes) => {
         values: IndustryType.values,
         defaultValue: IndustryType.defaultValue,
       },
+      website: DataTypes.STRING,
+      number_of_employees: DataTypes.INTEGER,
     },
     {
       sequelize,

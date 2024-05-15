@@ -8,6 +8,8 @@ const usersRouter = require("./Users.routes");
 const accountsRouter = require("./Accounts.routes");
 const countriesRouter = require("./Countries.routes");
 const customerPhoneNumbersRouter = require("./CustomerPhoneNumbers.routes");
+const citiesRouter = require("./Cities.routes");
+const statesRouter = require("./States.routes");
 
 module.exports = {
   customersRouter,
@@ -20,4 +22,6 @@ module.exports = {
   accountsRouter,
   countriesRouter,
   customerPhoneNumbersRouter,
+  citiesRouter,
+  statesRouter,
 };

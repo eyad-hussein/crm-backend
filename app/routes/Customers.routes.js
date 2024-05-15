@@ -19,7 +19,7 @@ router.get("/", customerController.getCustomers);
 router.get("/:id", customerController.getCustomerById);
 
 router.patch("/:id", customerController.patchCustomer);
-router.patch("/:id/:state", customerController.patchCustomerState);
+router.patch("/:id/:status", customerController.patchCustomerStatus);
 
 router.put("/:id", customerController.putCustomer);
 

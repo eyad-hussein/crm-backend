@@ -1,4 +1,4 @@
-const { CustomerStateType } = require("../enums");
+const { CustomerStatusType } = require("../enums");
 const {
   customerRepository,
   followUpRepository,
@@ -48,112 +48,57 @@ const deleteCustomer = asyncHandler(async (req, res, next) => {
 });
 
 const createCustomer = asyncHandler(async (req, res, next) => {
-  const { body } = req;
-  const { state } = body;
-
-  const customer = await customerRepository.createCustomer(body);
-  const { id } = customer;
-
-  await _createRecordBasedOnState(state, id);
-
-  res.json(id);
-});
-
-const patchCustomerState = asyncHandler(async (req, res, next) => {
   try {
-    console.log("patching customer state, controller");
-    const { id, state } = req.params;
-    _changeCustomerState(id, state);
-    res.json("State updated successfully");
+    console.log("creating customer, controller");
+    const { body } = req;
+    const { status } = body;
+
+    const customer = await customerRepository.createCustomer(body);
+    const { id } = customer;
+
+    await _createRecordBasedOnStatus(status, id);
+
+    res.json(id);
   } catch (error) {
     throw error;
   }
 });
 
-const _createRecordBasedOnState = async (state, customerId) => {
-  const body = {
-    customer_id: customerId,
-  };
-
-  switch (state) {
-    case CustomerStateType.FOLLOW_UP:
-      await followUpRepository.createFollowUp(body);
-      break;
-    case CustomerStateType.CLOSURE:
-      await closureRepository.createClosure(body);
-      break;
-    case CustomerStateType.PROSPECT:
-      await prospectRepository.createProspect(body);
-      break;
-    case CustomerStateType.CONTACT:
-      await contactRepository.createContact(body);
-      break;
-    case CustomerStateType.PROPSAL:
-      await proposalRepository.createProposal(body);
-      break;
-    case CustomerStateType.CUSTOMER:
-    default:
-      res.json("Nothing to do here");
-  }
-};
-
-// I could make it that i get the state, change its name to a model name(function already written), then delete or update with the model, however, I believe this is a more better and genereal approach
-
-const _deleteCustomerByState = async (state, customerId) => {
+const patchCustomerStatus = asyncHandler(async (req, res, next) => {
   try {
-    console.log("deleting customer by state, controller");
-
-    switch (state) {
-      case CustomerStateType.FOLLOW_UP:
-        await followUpRepository.deleteFollowUpByCustomerId(customerId);
-        break;
-      case CustomerStateType.CLOSURE:
-        await closureRepository.deleteClosureByCustomerId(customerId);
-        break;
-      case CustomerStateType.PROSPECT:
-        await prospectRepository.deleteProspectByCustomerId(customerId);
-        break;
-      case CustomerStateType.CONTACT:
-        await contactRepository.deleteContactByCustomerId(customerId);
-        break;
-      case CustomerStateType.PROPSAL:
-        await proposalRepository.deleteProposalByCustomerId(customerId);
-        break;
-      case CustomerStateType.CUSTOMER:
-      default:
-        res.json("Nothing to do here");
-    }
+    console.log("patching customer status, controller");
+    const { id, status } = req.params;
+    _changeCustomerStatus(id, status);
+    res.json("Status updated successfully");
   } catch (error) {
     throw error;
   }
-};
+});
 
-const _updateCustomerByState = async (state, customerId) => {
+const _createRecordBasedOnStatus = async (status, customerId) => {
   try {
-    console.log("updating customer by state, controller");
+    console.log("creating record based on status, controller");
     const body = {
       customer_id: customerId,
     };
 
-    console.log(body, state);
-
-    switch (state) {
-      case CustomerStateType.FOLLOW_UP:
+    switch (status) {
+      case CustomerStatusType.FOLLOW_UP:
         await followUpRepository.createFollowUp(body);
         break;
-      case CustomerStateType.CLOSURE:
+      case CustomerStatusType.CLOSURE:
         await closureRepository.createClosure(body);
         break;
-      case CustomerStateType.PROSPECT:
+      case CustomerStatusType.PROSPECT:
         await prospectRepository.createProspect(body);
         break;
-      case CustomerStateType.CONTACT:
+      case CustomerStatusType.CONTACT:
         await contactRepository.createContact(body);
         break;
-      case CustomerStateType.PROPSAL:
+      case CustomerStatusType.PROPSAL:
         await proposalRepository.createProposal(body);
         break;
-      case CustomerStateType.CUSTOMER:
+      case CustomerStatusType.CUSTOMER:
       default:
         res.json("Nothing to do here");
     }
@@ -162,16 +107,81 @@ const _updateCustomerByState = async (state, customerId) => {
   }
 };
 
-const _changeCustomerState = async (customerId, newState) => {
-  try {
-    console.log("changing customer state, controller");
-    const customer = await customerRepository.getCustomerById(customerId);
-    const { state } = customer;
-    let oldState = state;
+// I could make it that i get the status, change its name to a model name(function already written), then delete or update with the model, however, I believe this is a more better and genereal approach
 
-    await _deleteCustomerByState(oldState, customerId);
-    await customerRepository.patchCustomer(customerId, { state: newState });
-    await _updateCustomerByState(newState, customerId);
+const _deleteCustomerByStatus = async (status, customerId) => {
+  try {
+    console.log("deleting customer by status, controller");
+
+    switch (status) {
+      case CustomerStatusType.FOLLOW_UP:
+        await followUpRepository.deleteFollowUpByCustomerId(customerId);
+        break;
+      case CustomerStatusType.CLOSURE:
+        await closureRepository.deleteClosureByCustomerId(customerId);
+        break;
+      case CustomerStatusType.PROSPECT:
+        await prospectRepository.deleteProspectByCustomerId(customerId);
+        break;
+      case CustomerStatusType.CONTACT:
+        await contactRepository.deleteContactByCustomerId(customerId);
+        break;
+      case CustomerStatusType.PROPSAL:
+        await proposalRepository.deleteProposalByCustomerId(customerId);
+        break;
+      case CustomerStatusType.CUSTOMER:
+      default:
+        return "Nothing to do here";
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
+const _updateCustomerByStatus = async (status, customerId) => {
+  try {
+    console.log("updating customer by status, controller");
+    const body = {
+      customer_id: customerId,
+    };
+
+    console.log(body, status);
+
+    switch (status) {
+      case CustomerStatusType.FOLLOW_UP:
+        await followUpRepository.createFollowUp(body);
+        break;
+      case CustomerStatusType.CLOSURE:
+        await closureRepository.createClosure(body);
+        break;
+      case CustomerStatusType.PROSPECT:
+        await prospectRepository.createProspect(body);
+        break;
+      case CustomerStatusType.CONTACT:
+        await contactRepository.createContact(body);
+        break;
+      case CustomerStatusType.PROPSAL:
+        await proposalRepository.createProposal(body);
+        break;
+      case CustomerStatusType.CUSTOMER:
+      default:
+        return "Nothing to do here";
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
+const _changeCustomerStatus = async (customerId, newStatus) => {
+  try {
+    console.log("changing customer status, controller");
+    const customer = await customerRepository.getCustomerById(customerId);
+    const { status } = customer;
+    let oldStatus = status;
+
+    await _deleteCustomerByStatus(oldStatus, customerId);
+    await customerRepository.patchCustomer(customerId, { status: newStatus });
+    await _updateCustomerByStatus(newStatus, customerId);
   } catch (error) {
     throw error;
   }
@@ -184,5 +194,5 @@ module.exports = {
   putCustomer,
   deleteCustomer,
   createCustomer,
-  patchCustomerState,
+  patchCustomerStatus,
 };

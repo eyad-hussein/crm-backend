@@ -8,6 +8,8 @@ const userController = require("./User.controller");
 const accountController = require("./Account.controller");
 const countryController = require("./Country.controller");
 const customerPhoneNumberController = require("./CustomerPhoneNumber.controller");
+const cityController = require("./City.controller");
+const stateController = require("./State.controller");
 
 module.exports = {
   customerController,
@@ -20,4 +22,6 @@ module.exports = {
   accountController,
   countryController,
   customerPhoneNumberController,
+  cityController,
+  stateController,
 };

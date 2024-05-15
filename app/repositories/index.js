@@ -8,6 +8,8 @@ const userRepository = require("./User.repository");
 const accountRepository = require("./Account.repository");
 const countryRepository = require("./Country.repository");
 const customerPhoneNumberRepository = require("./CustomerPhoneNumber.repository");
+const cityRepository = require("./City.repository");
+const stateRepository = require("./State.repository");
 
 module.exports = {
   customerRepository,
@@ -20,4 +22,6 @@ module.exports = {
   accountRepository,
   countryRepository,
   customerPhoneNumberRepository,
+  cityRepository,
+  stateRepository,
 };

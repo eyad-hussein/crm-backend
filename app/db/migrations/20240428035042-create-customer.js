@@ -20,11 +20,6 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING,
       },
-      user_name: {
-        allowNull: false,
-        type: Sequelize.STRING,
-        unique: true,
-      },
       title: {
         allowNull: false,
         type: Sequelize.STRING,
@@ -33,12 +28,6 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING,
         unique: true,
-      },
-      marketing_objective: {
-        type: Sequelize.STRING,
-      },
-      package_selected: {
-        type: Sequelize.STRING,
       },
       priority: {
         type: Sequelize.INTEGER,
