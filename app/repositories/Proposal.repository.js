@@ -1,23 +1,44 @@
 const { Proposal } = require("../db/models");
 
 const createProposal = async (body) => {
-  return await Proposal.create(body);
+  try {
+    console.log("Creating proposal, repository");
+    return await Proposal.create(body);
+  } catch (error) {
+    throw error;
+  }
 };
 
 const getProposals = async () => {
-  return await Proposal.findAll();
+  try {
+    console.log("Getting proposals, repository");
+    return await Proposal.findAll();
+  } catch (error) {
+    throw error;
+  }
 };
 
 const getProposalById = async () => {
-  return await Proposal.findByPk(id);
+  try {
+    console.log("Getting proposal by id, repository");
+
+    return await Proposal.findByPk(id);
+  } catch (error) {
+    throw error;
+  }
 };
 
 const deleteProposalByCustomerId = async (customerId) => {
-  return await Proposal.destroy({
-    where: {
-      customer_id: customerId,
-    },
-  });
+  try {
+    console.log("Deleting proposal by customer id, repository");
+    return await Proposal.destroy({
+      where: {
+        customer_id: customerId,
+      },
+    });
+  } catch (error) {
+    throw error;
+  }
 };
 
 module.exports = {

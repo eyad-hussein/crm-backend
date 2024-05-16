@@ -1,5 +1,6 @@
 "use strict";
 const { Model } = require("sequelize");
+const { CountryType } = require("../../enums");
 module.exports = (sequelize, DataTypes) => {
   class Country extends Model {
     /**
@@ -12,11 +13,20 @@ module.exports = (sequelize, DataTypes) => {
       Country.hasMany(models.Address, {
         foreignKey: "country_id",
       });
+
+      Country.hasMany(models.Customer, {
+        foreignKey: "country_id",
+        as: "customers",
+      });
     }
   }
   Country.init(
     {
-      country_name: DataTypes.STRING,
+      country_name: {
+        type: DataTypes.ENUM,
+        values: CountryType.values,
+        defaultValue: CountryType.defaultValue,
+      },
     },
     {
       sequelize,

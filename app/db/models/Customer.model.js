@@ -1,6 +1,6 @@
 "use strict";
 const { Model } = require("sequelize");
-const { StateType } = require("../../enums");
+const { StatusType, LeadSourceType, SalutationType } = require("../../enums");
 module.exports = (sequelize, DataTypes) => {
   class Customer extends Model {
     /**
@@ -24,9 +24,9 @@ module.exports = (sequelize, DataTypes) => {
         as: "addresses",
       });
 
-      Customer.hasMany(models.CustomerPhoneNumber, {
-        foreignKey: "customer_id",
-        as: "customer_phone_numbers",
+      Customer.belongsTo(models.CustomerPhoneNumber, {
+        foreignKey: "customer_phone_number_id",
+        as: "customer_phone_number",
       });
       Customer.belongsToMany(models.Service, {
         through: "customer_services",
@@ -39,9 +39,49 @@ module.exports = (sequelize, DataTypes) => {
         as: "user",
       });
 
-      Customer.hasOne(models.OnHold, {
+      Customer.hasOne(models.FollowUp, {
         foreignKey: "customer_id",
-        as: "on_hold",
+        as: "follow_up",
+      });
+
+      Customer.hasOne(models.Closure, {
+        foreignKey: "customer_id",
+        as: "closure",
+      });
+
+      Customer.hasOne(models.Prospect, {
+        foreignKey: "customer_id",
+        as: "prospect",
+      });
+
+      Customer.hasOne(models.Contact, {
+        foreignKey: "customer_id",
+        as: "contact",
+      });
+
+      Customer.hasOne(models.Proposal, {
+        foreignKey: "customer_id",
+        as: "proposal",
+      });
+
+      Customer.belongsTo(models.Country, {
+        foreignKey: "country_id",
+        as: "country",
+      });
+
+      Customer.belongsTo(models.City, {
+        foreignKey: "city_id",
+        as: "city",
+      });
+
+      Customer.belongsTo(models.State, {
+        foreignKey: "state_id",
+        as: "state",
+      });
+
+      Customer.belongsTo(models.PostalCode, {
+        foreignKey: "postal_code_id",
+        as: "postal_code",
       });
     }
   }
@@ -49,20 +89,32 @@ module.exports = (sequelize, DataTypes) => {
     {
       first_name: DataTypes.STRING,
       last_name: DataTypes.STRING,
-      user_name: { type: DataTypes.STRING, unique: true },
       title: DataTypes.STRING,
       email: { type: DataTypes.STRING, unique: true },
-      marketing_objective: DataTypes.STRING,
-      package_selected: DataTypes.STRING,
       priority: DataTypes.INTEGER,
       description: DataTypes.TEXT,
       follow_up_date: DataTypes.DATE,
-      state: {
+      salutation: {
         type: DataTypes.ENUM,
-        values: StateType.values,
-        defaultValue: StateType.defaultValue,
+        values: SalutationType.values,
+        defaultValue: SalutationType.defaultValue,
       },
+      status: {
+        type: DataTypes.ENUM,
+        values: StatusType.values,
+        defaultValue: StatusType.defaultValue,
+      },
+      lead_source: {
+        type: DataTypes.ENUM,
+        values: LeadSourceType.values,
+        defaultValue: LeadSourceType.defaultValue,
+      },
+      country_id: DataTypes.INTEGER,
+      city_id: DataTypes.INTEGER,
       user_id: DataTypes.INTEGER,
+      state_id: DataTypes.INTEGER,
+      customer_phone_number_id: DataTypes.INTEGER,
+      postal_code_id: DataTypes.INTEGER,
       account_id: DataTypes.INTEGER,
     },
     {

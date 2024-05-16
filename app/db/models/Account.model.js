@@ -9,9 +9,9 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Account.hasOne(models.Customer, {
+      Account.hasMany(models.Customer, {
         foreignKey: "account_id",
-        as: "customer",
+        as: "customers",
       });
     }
   }
@@ -23,6 +23,8 @@ module.exports = (sequelize, DataTypes) => {
         values: IndustryType.values,
         defaultValue: IndustryType.defaultValue,
       },
+      website: DataTypes.STRING,
+      number_of_employees: DataTypes.INTEGER,
     },
     {
       sequelize,

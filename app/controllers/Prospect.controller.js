@@ -1,4 +1,4 @@
-const { prospectRepository } = require("../repositories");
+const { prospectRepository, customerRepository } = require("../repositories");
 
 const asyncHandler = require("express-async-handler");
 
@@ -28,7 +28,10 @@ const deleteProspect = asyncHandler(async (req, res, next) => {
 
 const createProspect = asyncHandler(async (req, res, next) => {
   const { body } = req;
-  const prospect = await prospectRepository.createProspect(body);
+  const customer = await customerRepository.createCustomer(body);
+  const prospect = await prospectRepository.createProspect({
+    customer_id: customer.id,
+  });
   const { id } = prospect;
   res.json(id);
 });

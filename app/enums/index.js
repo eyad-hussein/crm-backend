@@ -5,9 +5,11 @@ const PhoneNumberType = require("./PhoneNumberType.enum");
 const IndustryType = require("./IndustryType.enum");
 const AddressType = require("./AddressType.enum");
 const ActivityType = require("./ActivityType.enum");
-const CustomerStateType = require("./CustomerStateType.enum");
-const StateType = require("./StateType.enum");
+const CustomerStatusType = require("./CustomerStatusType.enum");
+const StatusType = require("./StatusType.enum");
 const ServiceType = require("./ServiceType.enum");
+const CountryType = require("./CountryType.enum");
+const SalutationType = require("./SalutationType.enum");
 
 module.exports = {
   LeadStatusType,
@@ -17,7 +19,9 @@ module.exports = {
   IndustryType,
   AddressType,
   ActivityType,
-  CustomerStateType,
-  StateType,
+  CustomerStatusType,
+  StatusType,
   ServiceType,
+  CountryType,
+  SalutationType,
 };

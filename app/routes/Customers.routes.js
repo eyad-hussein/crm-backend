@@ -1,25 +1,28 @@
 const express = require("express");
 const { customerController } = require("../controllers");
-const onHoldsRouter = require("./OnHolds.routes");
-const reservesRouter = require("./Reserves.routes");
+const followUpsRouter = require("./FollowUps.routes");
+const closuresRouter = require("./Closures.routes");
 const prospectsRouter = require("./Prospects.routes");
-const clientsRouter = require("./Clients.routes");
+const contactsRouter = require("./Contacts.routes");
 const proposalsRouter = require("./Proposals.routes");
 
 const router = express.Router();
-router.use("/on-holds", onHoldsRouter);
-router.use("/reserves", reservesRouter);
+router.use("/follow-ups", followUpsRouter);
+router.use("/closures", closuresRouter);
 router.use("/prospects", prospectsRouter);
-router.use("/clients", clientsRouter);
+router.use("/contacts", contactsRouter);
 router.use("/proposals", proposalsRouter);
 
 router.post("/", customerController.createCustomer);
 
 router.get("/", customerController.getCustomers);
+router.get("/search", customerController.searchForCustomer);
 router.get("/:id", customerController.getCustomerById);
 
 router.patch("/:id", customerController.patchCustomer);
-router.patch("/:id/:state", customerController.patchCustomerState);
+router.patch("/:id/:status", customerController.patchCustomerStatus);
+
+router.put("/:id", customerController.putCustomer);
 
 router.delete("/:id", customerController.deleteCustomer);
 

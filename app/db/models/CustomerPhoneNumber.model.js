@@ -9,8 +9,8 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      CustomerPhoneNumber.belongsTo(models.Customer, {
-        foreignKey: "customer_id",
+      CustomerPhoneNumber.hasOne(models.Customer, {
+        foreignKey: "customer_phone_number_id",
         as: "customer",
       });
     }
@@ -24,7 +24,6 @@ module.exports = (sequelize, DataTypes) => {
         values: PhoneNumberType.values,
         defaultValue: PhoneNumberType.defaultValue,
       },
-      customer_id: DataTypes.INTEGER,
     },
     {
       sequelize,
