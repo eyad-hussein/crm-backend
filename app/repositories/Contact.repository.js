@@ -1,4 +1,5 @@
-const { Contact } = require("../db/models");
+const { Contact, Customer } = require("../db/models");
+const { GET_CUSTOMER_QUERY } = require("./queries");
 
 const createContact = async (body) => {
   try {
@@ -12,7 +13,16 @@ const createContact = async (body) => {
 const getContacts = async () => {
   try {
     console.log("Getting contacts, repository");
-    return await Contact.findAll();
+
+    return await Contact.findAll({
+      include: [
+        {
+          model: Customer,
+          as: "customer",
+          ...GET_CUSTOMER_QUERY,
+        },
+      ],
+    });
   } catch (error) {
     throw error;
   }

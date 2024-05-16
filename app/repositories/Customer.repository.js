@@ -2,6 +2,7 @@ const { Customer } = require("../db/models");
 const models = require("../db/models");
 const { GET_CUSTOMER_QUERY } = require("./queries");
 const { changeInputToModelName } = require("../utils/Parser.utils");
+const { Op } = require("sequelize");
 
 const createCustomer = async (body) => {
   console.log("body", body);
@@ -14,9 +15,6 @@ const createCustomer = async (body) => {
     if (body[association]) {
       const modelName = changeInputToModelName(association);
 
-      console.log("modelName", modelName);
-      console.log("body[association]", body[association]);
-      console.log("association", association);
       const modelInstance = await models[modelName].create(body[association]);
       await customer.update(
         {
@@ -96,6 +94,61 @@ const deleteCustomer = async (id) => {
   });
 };
 
+const searchForCustomer = async (query) => {
+  console.log("searching for customer, repository");
+
+  let { query: q, status } = query;
+
+  const [firstName, lastName] = q.split(" ");
+
+  const searchCriteria = {
+    [Op.or]: [
+      {
+        first_name: {
+          [Op.substring]: firstName.toLowerCase(),
+        },
+      },
+      lastName
+        ? {
+            last_name: {
+              [Op.substring]: lastName.toLowerCase(),
+            },
+          }
+        : {
+            last_name: {
+              [Op.substring]: firstName.toLowerCase(),
+            },
+          },
+    ],
+  };
+
+  const customers = await Customer.findAll({
+    where: searchCriteria,
+  });
+
+  if (status != undefined) {
+    console.log("status", status);
+    searchCriteria.status = status;
+
+    const customersIds = customers.map((customer) => customer.id);
+
+    return await models[changeInputToModelName(status)].findAll({
+      where: {
+        customer_id: {
+          [Op.in]: customersIds,
+        },
+      },
+      include: {
+        model: Customer,
+        as: "customer",
+        ...GET_CUSTOMER_QUERY,
+      },
+    });
+  }
+
+  return customers;
+};
+
 module.exports = {
   getCustomers,
   getCustomerById,
@@ -103,4 +156,5 @@ module.exports = {
   putCustomer,
   deleteCustomer,
   createCustomer,
+  searchForCustomer,
 };

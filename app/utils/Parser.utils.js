@@ -10,6 +10,11 @@ const changeInputToModelName = (input) => {
   return modelName;
 };
 
+const changeToSingular = (input) => {
+  return singularize(input);
+};
+
 module.exports = {
   changeInputToModelName,
+  changeToSingular,
 };
