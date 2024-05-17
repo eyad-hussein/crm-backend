@@ -1,7 +1,10 @@
 const { Customer } = require("../db/models");
 const models = require("../db/models");
 const { GET_CUSTOMER_QUERY } = require("./queries");
-const { changeInputToModelName } = require("../utils/Parser.utils");
+const {
+  changeInputToModelName,
+  changeToSingular,
+} = require("../utils/Parser.utils");
 const { Op } = require("sequelize");
 
 const createCustomer = async (body) => {
@@ -94,6 +97,53 @@ const deleteCustomer = async (id) => {
   });
 };
 
+const filterCustomers = async (queries) => {
+  console.log("filtering customers, repository");
+
+  console.log("queries", queries);
+
+  const filterCriteria = {};
+
+  if (queries.first_name)
+    filterCriteria.first_name = { [Op.substring]: queries.first_name };
+  if (queries.last_name)
+    filterCriteria.last_name = { [Op.substring]: queries.last_name };
+  if (queries.email) filterCriteria.email = { [Op.substring]: queries.email };
+  if (queries.title) filterCriteria.title = { [Op.substring]: queries.title };
+  if (queries.priority) filterCriteria.priority = queries.priority;
+  if (queries.lead_source) filterCriteria.lead_source = queries.lead_source;
+  if (queries.salutation) filterCriteria.salutation = queries.salutation;
+
+  if (queries.status) {
+    const status = changeToSingular(queries.status);
+    filterCriteria.status = status;
+  }
+  const customers = await Customer.findAll({
+    where: filterCriteria,
+  });
+
+  if (queries.status != undefined) {
+    const customersIds = customers.map((customer) => customer.id);
+
+    return await models[changeInputToModelName(queries.status)].findAll({
+      where: {
+        customer_id: {
+          [Op.in]: customersIds,
+        },
+      },
+      include: {
+        model: Customer,
+        as: "customer",
+        ...GET_CUSTOMER_QUERY,
+      },
+    });
+  }
+
+  return await Customer.findAll({
+    where: filterCriteria,
+  });
+};
+
 const searchForCustomer = async (query) => {
   console.log("searching for customer, repository");
 
@@ -127,9 +177,6 @@ const searchForCustomer = async (query) => {
   });
 
   if (status != undefined) {
-    console.log("status", status);
-    searchCriteria.status = status;
-
     const customersIds = customers.map((customer) => customer.id);
 
     return await models[changeInputToModelName(status)].findAll({
@@ -157,4 +204,5 @@ module.exports = {
   deleteCustomer,
   createCustomer,
   searchForCustomer,
+  filterCustomers,
 };

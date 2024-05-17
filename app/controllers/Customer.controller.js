@@ -84,6 +84,15 @@ const searchForCustomer = asyncHandler(async (req, res, next) => {
   }
 });
 
+const filterCustomers = asyncHandler(async (req, res, next) => {
+  try {
+    console.log("filtering customers, controller");
+    res.json(await customerRepository.filterCustomers(req.body));
+  } catch (error) {
+    throw error;
+  }
+});
+
 const _createRecordBasedOnStatus = async (status, customerId) => {
   try {
     console.log("creating record based on status, controller");
@@ -205,4 +214,5 @@ module.exports = {
   createCustomer,
   patchCustomerStatus,
   searchForCustomer,
+  filterCustomers,
 };
