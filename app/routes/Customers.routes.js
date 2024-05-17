@@ -17,6 +17,7 @@ router.post("/", customerController.createCustomer);
 
 router.get("/", customerController.getCustomers);
 router.get("/search", customerController.searchForCustomer);
+router.post("/filter", customerController.filterCustomers);
 router.get("/:id", customerController.getCustomerById);
 
 router.patch("/:id", customerController.patchCustomer);
