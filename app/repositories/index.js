@@ -10,6 +10,7 @@ const countryRepository = require("./Country.repository");
 const customerPhoneNumberRepository = require("./CustomerPhoneNumber.repository");
 const cityRepository = require("./City.repository");
 const stateRepository = require("./State.repository");
+const activityRepository = require("./Activity.repository");
 
 module.exports = {
   customerRepository,
@@ -24,4 +25,5 @@ module.exports = {
   customerPhoneNumberRepository,
   cityRepository,
   stateRepository,
+  activityRepository,
 };

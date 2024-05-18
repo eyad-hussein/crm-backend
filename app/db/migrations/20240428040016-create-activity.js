@@ -17,6 +17,9 @@ module.exports = {
         values: ActivityType.values,
         defaultValue: ActivityType.defaultValue,
       },
+      title: {
+        type: Sequelize.STRING,
+      },
       description: {
         type: Sequelize.TEXT,
       },

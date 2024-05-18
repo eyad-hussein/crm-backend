@@ -10,6 +10,7 @@ const countryController = require("./Country.controller");
 const customerPhoneNumberController = require("./CustomerPhoneNumber.controller");
 const cityController = require("./City.controller");
 const stateController = require("./State.controller");
+const activityController = require("./Activity.controller");
 
 module.exports = {
   customerController,
@@ -24,4 +25,5 @@ module.exports = {
   customerPhoneNumberController,
   cityController,
   stateController,
+  activityController,
 };

@@ -10,6 +10,7 @@ const countriesRouter = require("./Countries.routes");
 const customerPhoneNumbersRouter = require("./CustomerPhoneNumbers.routes");
 const citiesRouter = require("./Cities.routes");
 const statesRouter = require("./States.routes");
+const activitiesRouter = require("./Activities.routes");
 
 module.exports = {
   customersRouter,
@@ -24,4 +25,5 @@ module.exports = {
   customerPhoneNumbersRouter,
   citiesRouter,
   statesRouter,
+  activitiesRouter,
 };
