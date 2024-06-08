@@ -13,6 +13,11 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "city_id",
         as: "addresses",
       });
+
+      City.belongsTo(models.State, {
+        foreignKey: "state_id",
+        as: "state",
+      });
     }
   }
   City.init(

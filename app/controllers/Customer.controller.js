@@ -53,6 +53,8 @@ const createCustomer = asyncHandler(async (req, res, next) => {
     const { body } = req;
     const { status } = body;
 
+    console.log(body, status);
+
     const customer = await customerRepository.createCustomer(body);
     const { id } = customer;
 

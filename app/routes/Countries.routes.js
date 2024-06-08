@@ -1,5 +1,6 @@
 const express = require("express");
-const { countryController } = require("../controllers");
+const { countryController, stateController } = require("../controllers");
+const statesRouter = require("./States.routes");
 
 const router = express.Router();
 
@@ -11,5 +12,7 @@ router.get("/:id", countryController.getCountryById);
 router.patch("/:id", countryController.patchCountry);
 
 router.delete("/:id", countryController.deleteCountry);
+
+router.get("/:countryId/states", stateController.getStatesByCountryId);
 
 module.exports = router;

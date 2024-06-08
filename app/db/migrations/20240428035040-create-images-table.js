@@ -1,22 +1,24 @@
 "use strict";
-const { IndustryType } = require("../../enums/index");
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("accounts", {
+    /**
+     * Add altering commands here.
+     *
+     * Example:
+     * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
+     */
+
+    await queryInterface.createTable("images", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      account_name: {
+      image_url: {
         type: Sequelize.STRING,
-      },
-      industry: {
-        type: Sequelize.ENUM,
-        values: IndustryType.values,
-        defaultValue: IndustryType.defaultValue,
       },
       created_at: {
         allowNull: false,
@@ -30,7 +32,15 @@ module.exports = {
       },
     });
   },
+
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("accounts");
+    /**
+     * Add reverting commands here.
+     *
+     * Example:
+     * await queryInterface.dropTable('users');
+     */
+
+    await queryInterface.dropTable("images");
   },
 };

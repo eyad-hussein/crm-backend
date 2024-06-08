@@ -5,12 +5,13 @@ const prospectRepository = require("./Prospect.repository");
 const contactRepository = require("./Contact.repository");
 const proposalRepository = require("./Proposal.repository");
 const userRepository = require("./User.repository");
-const accountRepository = require("./Account.repository");
+const industryRepository = require("./Industry.repository");
 const countryRepository = require("./Country.repository");
 const customerPhoneNumberRepository = require("./CustomerPhoneNumber.repository");
 const cityRepository = require("./City.repository");
 const stateRepository = require("./State.repository");
 const activityRepository = require("./Activity.repository");
+const extensionRepository = require("./Extension.repository");
 
 module.exports = {
   customerRepository,
@@ -20,10 +21,11 @@ module.exports = {
   contactRepository,
   proposalRepository,
   userRepository,
-  accountRepository,
+  industryRepository,
   countryRepository,
   customerPhoneNumberRepository,
   cityRepository,
   stateRepository,
   activityRepository,
+  extensionRepository,
 };

@@ -1,34 +1,29 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class State extends Model {
+  class Industry extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      State.hasMany(models.Address, {
-        foreignKey: "state_id",
-        as: "addresses",
-      });
-
-      State.belongsTo(models.Country, {
-        foreignKey: "country_id",
-        as: "country",
+      Industry.hasMany(models.Customer, {
+        foreignKey: "industry_id",
+        as: "customers",
       });
     }
   }
-  State.init(
+  Industry.init(
     {
-      state_name: DataTypes.STRING,
+      industry_name: DataTypes.STRING,
     },
     {
       sequelize,
-      modelName: "State",
-      tableName: "states",
+      modelName: "Industry",
+      tableName: "industries",
       underscored: true,
     }
   );
-  return State;
+  return Industry;
 };

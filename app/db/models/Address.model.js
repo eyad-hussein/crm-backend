@@ -1,6 +1,5 @@
 "use strict";
 const { Model } = require("sequelize");
-const { AddressType } = require("../../enums");
 module.exports = (sequelize, DataTypes) => {
   class Address extends Model {
     /**
@@ -22,10 +21,6 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "country_id",
         as: "country",
       });
-      Address.belongsTo(models.PostalCode, {
-        foreignKey: "postal_code_id",
-        as: "postal_code",
-      });
       Address.belongsTo(models.Customer, {
         foreignKey: "customer_id",
         as: "customer",
@@ -34,15 +29,9 @@ module.exports = (sequelize, DataTypes) => {
   }
   Address.init(
     {
-      address_type: {
-        type: DataTypes.ENUM,
-        values: AddressType.values,
-        defaultValue: AddressType.defaultValue,
-      },
-      city_id: DataTypes.STRING,
-      country_id: DataTypes.STRING,
-      state_id: DataTypes.STRING,
-      postal_code_id: DataTypes.STRING,
+      address_line_1: DataTypes.STRING,
+      address_line_2: DataTypes.STRING,
+      postal_code: DataTypes.STRING,
     },
     {
       sequelize,

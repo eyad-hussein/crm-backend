@@ -3,7 +3,7 @@ const { PhoneNumberType } = require("../../enums/index");
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("customer_phone_numbers", {
+    await queryInterface.createTable("user_phone_numbers", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -16,16 +16,11 @@ module.exports = {
       extension: {
         type: Sequelize.STRING,
       },
-      type_of_number: {
-        type: Sequelize.ENUM,
-        values: PhoneNumberType.values,
-        defaultValue: PhoneNumberType.defaultValue,
-      },
-      customer_id: {
+      user_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: "customers",
+          model: "users",
           key: "id",
         },
         onUpdate: "CASCADE",
@@ -44,6 +39,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("customer_phone_numbers");
+    await queryInterface.dropTable("user_phone_numbers");
   },
 };

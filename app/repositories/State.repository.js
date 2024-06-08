@@ -19,6 +19,20 @@ const getStates = async () => {
   }
 };
 
+const getStatesByCountryId = async (countryId) => {
+  try {
+    console.log("Getting states by country id, repository");
+
+    return await State.findAll({
+      where: {
+        country_id: countryId,
+      },
+    });
+  } catch (error) {
+    throw error;
+  }
+};
+
 const getStateById = async () => {
   try {
     console.log("Getting state by id, repository");
@@ -45,6 +59,7 @@ const deleteState = async (stateId) => {
 module.exports = {
   createState,
   getStates,
+  getStatesByCountryId,
   getStateById,
   deleteState,
 };

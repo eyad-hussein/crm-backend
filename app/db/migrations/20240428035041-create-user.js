@@ -40,6 +40,16 @@ module.exports = {
         onUpdate: "CASCADE",
         onDelete: "SET NULL",
       },
+      image_id: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+        references: {
+          model: "images",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL",
+      },
       created_at: {
         allowNull: false,
         type: Sequelize.DATE,

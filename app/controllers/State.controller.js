@@ -6,6 +6,11 @@ const getStates = asyncHandler(async (req, res, next) => {
   res.json(await stateRepository.getStates());
 });
 
+const getStatesByCountryId = asyncHandler(async (req, res, next) => {
+  const { countryId } = req.params;
+  res.json(await stateRepository.getStatesByCountryId(countryId));
+});
+
 const getStateById = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
   res.json(await stateRepository.getStateById(id));
@@ -40,6 +45,7 @@ const createState = asyncHandler(async (req, res, next) => {
 module.exports = {
   getStates,
   getStateById,
+  getStatesByCountryId,
   patchState,
   deleteState,
   createState,

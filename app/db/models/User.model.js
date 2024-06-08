@@ -24,6 +24,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "manager_id",
         as: "manager",
       });
+      User.belongsTo(models.Image, {
+        foreignKey: "image_id",
+        as: "image",
+      });
     }
   }
   User.init(

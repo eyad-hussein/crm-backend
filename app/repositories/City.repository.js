@@ -19,6 +19,20 @@ const getCities = async () => {
   }
 };
 
+const getCitiesByStateId = async (stateId) => {
+  try {
+    console.log("Getting cities by state id, repository");
+
+    return await City.findAll({
+      where: {
+        state_id: stateId,
+      },
+    });
+  } catch (error) {
+    throw error;
+  }
+};
+
 const getCityById = async () => {
   try {
     console.log("Getting city by id, repository");
@@ -47,4 +61,5 @@ module.exports = {
   getCities,
   getCityById,
   deleteCity,
+  getCitiesByStateId,
 };

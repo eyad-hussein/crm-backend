@@ -11,12 +11,13 @@ app.use(morgan("tiny"));
 const {
   customersRouter,
   usersRouter,
-  accountsRouter,
+  industriesRouter,
   countriesRouter,
   customerPhoneNumbersRouter,
   citiesRouter,
   statesRouter,
   activitiesRouter,
+  extensionsRouter,
 } = require("./app/routes");
 
 const db = require("./app/db/models/index");
@@ -32,12 +33,13 @@ const db = require("./app/db/models/index");
 
 app.use("/customers", customersRouter);
 app.use("/users", usersRouter);
-app.use("/accounts", accountsRouter);
+app.use("/industries", industriesRouter);
 app.use("/countries", countriesRouter);
 app.use("/customer-phone-numbers", customerPhoneNumbersRouter);
 app.use("/cities", citiesRouter);
 app.use("/states", statesRouter);
 app.use("/activities", activitiesRouter);
+app.use("/extensions", extensionsRouter);
 
 app.listen(5000, () => {
   console.log("Server started on port 5000");
