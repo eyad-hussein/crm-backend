@@ -1,3 +1,4 @@
+const logger = require("../utils/Logger");
 const { activityRepository } = require("../repositories");
 
 const asyncHandler = require("express-async-handler");
@@ -38,7 +39,7 @@ const createActivity = asyncHandler(async (req, res, next) => {
   const { body } = req;
   const { customerId } = req.params;
   body.customer_id = customerId;
-  console.log("creating activity, controller", customerId);
+  logger.info("creating activity, controller", { customerId });
 
   const activity = await activityRepository.createActivity(body);
 

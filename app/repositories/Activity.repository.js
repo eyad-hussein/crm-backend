@@ -1,10 +1,10 @@
-const { where } = require("sequelize");
+const logger = require("../utils/Logger");
 const { Activity } = require("../db/models");
 
 const createActivity = async (body) => {
   try {
-    console.log("Creating activity, repository");
-    console.log("body", body);
+    logger.info("Creating activity, repository");
+    logger.info("body", { body });
     return await Activity.create(body);
   } catch (error) {
     throw error;
@@ -13,7 +13,7 @@ const createActivity = async (body) => {
 
 const getActivities = async (customerId) => {
   try {
-    console.log("Getting activities, repository");
+    logger.info("Getting activities, repository");
 
     return await Activity.findAll({
       where: {
@@ -27,7 +27,7 @@ const getActivities = async (customerId) => {
 
 const getActivityById = async () => {
   try {
-    console.log("Getting activity by id, repository");
+    logger.info("Getting activity by id, repository");
     return await Activity.findByPk(id);
   } catch (error) {
     throw error;
@@ -36,7 +36,7 @@ const getActivityById = async () => {
 
 const deleteActivity = async (activityId) => {
   try {
-    console.log("Deleting activity by customer id, repository");
+    logger.info("Deleting activity by customer id, repository");
 
     return await Activity.destroy({
       where: {
@@ -50,7 +50,7 @@ const deleteActivity = async (activityId) => {
 
 const patchActivity = async (body) => {
   try {
-    console.log("Patching activity, repository");
+    logger.info("Patching activity, repository");
 
     return await Activity.update(body, {
       where: {

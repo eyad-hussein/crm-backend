@@ -6,6 +6,7 @@ const {
   changeToSingular,
 } = require("../utils/Parser.utils");
 const { Op } = require("sequelize");
+const logger = require("../utils/Logger");
 
 const createCustomer = async (body) => {
   const t = await models.sequelize.transaction();
@@ -179,9 +180,9 @@ const deleteCustomer = async (id) => {
 };
 
 const filterCustomers = async (queries) => {
-  console.log("filtering customers, repository");
+  logger.info("filtering customers, repository");
 
-  console.log("queries", queries);
+  logger.info("queries", { queries });
 
   const filterCriteria = {};
 
@@ -225,38 +226,90 @@ const filterCustomers = async (queries) => {
 };
 
 const searchForCustomer = async (query) => {
-  console.log("searching for customer, repository");
+  logger.info("searching for customer, repository");
+  logger.info("query", { query });
+  let { query: q, status, searchFilters } = query;
+  let customers = [];
 
-  let { query: q, status } = query;
+  logger.info("search filters before}", { searchFilters });
 
-  const [firstName, lastName] = q.split(" ");
+  searchFilters = searchFilters != "undefined" ? searchFilters.split(",") : [];
 
-  const searchCriteria = {
-    [Op.or]: [
-      {
-        first_name: {
-          [Op.substring]: firstName.toLowerCase(),
+  logger.info("search filters after", { searchFilters });
+
+  if (searchFilters.length) {
+    const searchCriteria = {
+      [Op.or]: [
+        { name: { [Op.substring]: q } },
+        { follow_up_date: { [Op.substring]: q } },
+        { lead_source: { [Op.substring]: q } },
+        { email: { [Op.substring]: q } },
+      ],
+    };
+
+    const include = [];
+
+    if (searchFilters.includes("industry")) {
+      include.push({
+        model: models.Industry,
+        as: "industry",
+        where: { industry_name: { [Op.substring]: q } },
+        required: true,
+      });
+    }
+
+    if (searchFilters.includes("phone_number")) {
+      include.push({
+        model: models.CustomerPhoneNumber,
+        as: "customer_phone_numbers",
+        where: { phone_number: { [Op.substring]: q } },
+        required: true,
+      });
+    }
+
+    if (searchFilters.includes("country")) {
+      include.push({
+        model: models.Address,
+        as: "addresses",
+        include: {
+          model: models.Country,
+          as: "country",
+          where: { country_name: { [Op.substring]: q } },
+          required: true,
         },
+        required: true,
+      });
+    }
+
+    if (searchFilters.includes("user")) {
+      include.push({
+        model: models.User,
+        as: "user",
+        where: {
+          [Op.or]: [
+            { first_name: { [Op.substring]: q } },
+            { last_name: { [Op.substring]: q } },
+          ],
+        },
+        required: true,
+      });
+    }
+
+    customers = await Customer.findAll({
+      where: searchCriteria,
+      include: include,
+    });
+  } else {
+    customers = await Customer.findAll({
+      where: {
+        name: { [Op.substring]: q },
       },
-      lastName
-        ? {
-            last_name: {
-              [Op.substring]: lastName.toLowerCase(),
-            },
-          }
-        : {
-            last_name: {
-              [Op.substring]: firstName.toLowerCase(),
-            },
-          },
-    ],
-  };
+    });
+  }
 
-  const customers = await Customer.findAll({
-    where: searchCriteria,
-  });
+  logger.info("custoers", { customers });
 
-  if (status != undefined) {
+  if (status !== undefined) {
     const customersIds = customers.map((customer) => customer.id);
 
     return await models[changeInputToModelName(status)].findAll({

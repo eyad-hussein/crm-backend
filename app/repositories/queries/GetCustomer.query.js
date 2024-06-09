@@ -14,7 +14,7 @@ const GET_CUSTOMER_QUERY = {
     { model: Industry, as: "industry" },
     { model: Service, as: "services" },
     { model: Activity, as: "activities" },
-    { model: Address, as: "addresses" },
+    { model: Address, as: "addresses", include: ["city", "state", "country"] },
   ],
 };
 

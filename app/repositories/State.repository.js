@@ -1,8 +1,10 @@
+const logger = require("../utils/Logger");
+
 const { State } = require("../db/models");
 
 const createState = async (body) => {
   try {
-    console.log("Creating state, repository");
+    logger.info("Creating state, repository");
     return await State.create(body);
   } catch (error) {
     throw error;
@@ -11,7 +13,7 @@ const createState = async (body) => {
 
 const getStates = async () => {
   try {
-    console.log("Getting states, repository");
+    logger.info("Getting states, repository");
 
     return await State.findAll();
   } catch (error) {
@@ -21,7 +23,7 @@ const getStates = async () => {
 
 const getStatesByCountryId = async (countryId) => {
   try {
-    console.log("Getting states by country id, repository");
+    logger.info("Getting states by country id, repository");
 
     return await State.findAll({
       where: {
@@ -35,7 +37,7 @@ const getStatesByCountryId = async (countryId) => {
 
 const getStateById = async () => {
   try {
-    console.log("Getting state by id, repository");
+    logger.info("Getting state by id, repository");
     return await State.findByPk(id);
   } catch (error) {
     throw error;
@@ -44,7 +46,7 @@ const getStateById = async () => {
 
 const deleteState = async (stateId) => {
   try {
-    console.log("Deleting state by customer id, repository");
+    logger.info("Deleting state by customer id, repository");
 
     return await State.destroy({
       where: {

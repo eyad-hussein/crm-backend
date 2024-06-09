@@ -1,8 +1,9 @@
+const logger = require("../utils/Logger");
 const { CustomerPhoneNumber } = require("../db/models");
 
 const createCustomerPhoneNumber = async (body) => {
   try {
-    console.log("Creating customerPhoneNumber, repository");
+    logger.info("Creating customerPhoneNumber, repository");
     return await CustomerPhoneNumber.create(body);
   } catch (error) {
     throw error;
@@ -11,7 +12,7 @@ const createCustomerPhoneNumber = async (body) => {
 
 const getCustomerPhoneNumbers = async () => {
   try {
-    console.log("Getting customerPhoneNumbers, repository");
+    logger.info("Getting customerPhoneNumbers, repository");
 
     return await CustomerPhoneNumber.findAll();
   } catch (error) {
@@ -21,7 +22,7 @@ const getCustomerPhoneNumbers = async () => {
 
 const getCustomerPhoneNumberById = async () => {
   try {
-    console.log("Getting customerPhoneNumber by id, repository");
+    logger.info("Getting customerPhoneNumber by id, repository");
     return await CustomerPhoneNumber.findByPk(id);
   } catch (error) {
     throw error;
@@ -30,7 +31,7 @@ const getCustomerPhoneNumberById = async () => {
 
 const deleteCustomerPhoneNumber = async (customerPhoneNumberId) => {
   try {
-    console.log("Deleting customerPhoneNumber by customer id, repository");
+    logger.info("Deleting customerPhoneNumber by customer id, repository");
 
     return await CustomerPhoneNumber.destroy({
       where: {

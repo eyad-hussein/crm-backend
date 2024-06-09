@@ -1,10 +1,12 @@
+const logger = require("../utils/Logger");
+
 const { Prospect, Customer } = require("../db/models");
 const customerRepository = require("./Customer.repository");
 
 const { GET_CUSTOMER_QUERY } = require("./queries");
 const createProspect = async (body) => {
   try {
-    console.log("Creating prospect, repository");
+    logger.info("Creating prospect, repository");
     return await Prospect.create(body);
   } catch (error) {
     throw error;
@@ -13,7 +15,7 @@ const createProspect = async (body) => {
 
 const getProspects = async () => {
   try {
-    console.log("Getting prospects, repository");
+    logger.info("Getting prospects, repository");
 
     return await Prospect.findAll({
       include: [
@@ -31,7 +33,7 @@ const getProspects = async () => {
 
 const getProspectById = async () => {
   try {
-    console.log("Getting prospect by id, repository");
+    logger.info("Getting prospect by id, repository");
     return await Prospect.findByPk(id);
   } catch (error) {
     throw error;
@@ -40,7 +42,7 @@ const getProspectById = async () => {
 
 const deleteProspectByCustomerId = async (customerId) => {
   try {
-    console.log("Deleting prospect by customer id, repository");
+    logger.info("Deleting prospect by customer id, repository");
 
     return await Prospect.destroy({
       where: {

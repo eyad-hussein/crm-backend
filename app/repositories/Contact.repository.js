@@ -1,9 +1,11 @@
+const logger = require("../utils/Logger");
+
 const { Contact, Customer } = require("../db/models");
 const { GET_CUSTOMER_QUERY } = require("./queries");
 
 const createContact = async (body) => {
   try {
-    console.log("Creating contact, repository");
+    logger.info("Creating contact, repository");
     return await Contact.create(body);
   } catch (error) {
     throw error;
@@ -12,7 +14,7 @@ const createContact = async (body) => {
 
 const getContacts = async () => {
   try {
-    console.log("Getting contacts, repository");
+    logger.info("Getting contacts, repository");
 
     return await Contact.findAll({
       include: [
@@ -30,7 +32,7 @@ const getContacts = async () => {
 
 const getContactById = async () => {
   try {
-    console.log("Getting contact by id, repository");
+    logger.info("Getting contact by id, repository");
     return await Contact.findByPk(id);
   } catch (error) {
     throw error;
@@ -39,7 +41,7 @@ const getContactById = async () => {
 
 const deleteContactByCustomerId = async (customerId) => {
   try {
-    console.log("Deleting contact by customer id, repository");
+    logger.info("Deleting contact by customer id, repository");
     return await Contact.destroy({
       where: {
         customer_id: customerId,
