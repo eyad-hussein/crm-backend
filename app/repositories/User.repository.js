@@ -22,6 +22,12 @@ const getUsers = async () => {
   return await User.findAll();
 };
 
+const getUsersByFilters = async (filterOptions) => {
+  return await User.findAll({
+    where: filterOptions,
+  });
+};
+
 const getUserById = async (id) => {
   return await User.findByPk(id, GET_USER_QUERY);
 };
@@ -59,4 +65,5 @@ module.exports = {
   patchUser,
   deleteUser,
   createUser,
+  getUsersByFilters,
 };

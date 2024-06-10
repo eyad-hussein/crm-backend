@@ -12,6 +12,7 @@ const cityRepository = require("./City.repository");
 const stateRepository = require("./State.repository");
 const activityRepository = require("./Activity.repository");
 const extensionRepository = require("./Extension.repository");
+const addressRepository = require("./Address.repository");
 
 module.exports = {
   customerRepository,
@@ -28,4 +29,5 @@ module.exports = {
   stateRepository,
   activityRepository,
   extensionRepository,
+  addressRepository,
 };

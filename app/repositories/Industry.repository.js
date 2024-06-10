@@ -9,6 +9,12 @@ const getIndustries = async () => {
   return await Industry.findAll();
 };
 
+const getIndustriesByFilters = async (filterOptions) => {
+  return await Industry.findAll({
+    where: filterOptions,
+  });
+};
+
 const getIndustryById = async (id) => {
   return await Industry.findByPk(id);
 };
@@ -33,4 +39,5 @@ module.exports = {
   patchIndustry,
   deleteIndustry,
   createIndustry,
+  getIndustriesByFilters,
 };

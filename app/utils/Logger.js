@@ -13,7 +13,7 @@ let alignColorsAndTime = winston.format.combine(
   winston.format.printf((info) => {
     const { timestamp, label, level, message, ...meta } = info;
     const metaString = Object.keys(meta).length
-      ? ` ${JSON.stringify(meta)}`
+      ? ` ${JSON.stringify(meta, null, 2)}` // Format JSON with indentation
       : "";
     return ` ${label}  ${timestamp}  ${level} : ${message}${metaString}`;
   })
@@ -30,7 +30,5 @@ const logger = winston.createLogger({
     }),
   ],
 });
-
-logger.info({ ds: "ds", dsd: "dsd" });
 
 module.exports = logger;

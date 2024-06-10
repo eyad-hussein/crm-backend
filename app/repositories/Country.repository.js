@@ -9,6 +9,12 @@ const getCountries = async () => {
   return await Country.findAll();
 };
 
+const getCountriesByFilters = async (filterOptions) => {
+  return await Country.findAll({
+    where: filterOptions,
+  });
+};
+
 const getCountryById = async (id) => {
   return await Country.findByPk(id);
 };
@@ -33,4 +39,5 @@ module.exports = {
   patchCountry,
   deleteCountry,
   createCountry,
+  getCountriesByFilters,
 };

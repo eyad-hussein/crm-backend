@@ -20,6 +20,12 @@ const getCustomerPhoneNumbers = async () => {
   }
 };
 
+const getCustomerPhoneNumbersByFilters = async (filterOptions) => {
+  return await CustomerPhoneNumber.findAll({
+    where: filterOptions,
+  });
+};
+
 const getCustomerPhoneNumberById = async () => {
   try {
     logger.info("Getting customerPhoneNumber by id, repository");
@@ -48,4 +54,5 @@ module.exports = {
   getCustomerPhoneNumbers,
   getCustomerPhoneNumberById,
   deleteCustomerPhoneNumber,
+  getCustomerPhoneNumbersByFilters,
 };

@@ -5,7 +5,7 @@ const {
   changeInputToModelName,
   changeToSingular,
 } = require("../utils/Parser.utils");
-const { Op } = require("sequelize");
+const { Op, where } = require("sequelize");
 const logger = require("../utils/Logger");
 
 const createCustomer = async (body) => {
@@ -231,8 +231,6 @@ const searchForCustomer = async (query) => {
   let { query: q, status, searchFilters } = query;
   let customers = [];
 
-  logger.info("search filters before}", { searchFilters });
-
   searchFilters = searchFilters != "undefined" ? searchFilters.split(",") : [];
 
   logger.info("search filters after", { searchFilters });
@@ -240,64 +238,95 @@ const searchForCustomer = async (query) => {
   if (searchFilters.length) {
     const searchCriteria = {
       [Op.or]: [
-        { name: { [Op.substring]: q } },
-        { follow_up_date: { [Op.substring]: q } },
-        { lead_source: { [Op.substring]: q } },
-        { email: { [Op.substring]: q } },
+        searchFilters.includes("name") && { name: { [Op.substring]: q } },
+        searchFilters.includes("follow_up_date") && {
+          follow_up_date: { [Op.substring]: q },
+        },
+        searchFilters.includes("lead_source") && {
+          lead_source: { [Op.substring]: q },
+        },
+        searchFilters.includes("email") && { email: { [Op.substring]: q } },
       ],
     };
 
     const include = [];
 
     if (searchFilters.includes("industry")) {
-      include.push({
-        model: models.Industry,
-        as: "industry",
+      const industries = await models.Industry.findAll({
         where: { industry_name: { [Op.substring]: q } },
-        required: true,
+      });
+      const industryIds = industries.map((industry) => industry.id);
+
+      searchCriteria[Op.or].push({
+        industry_id: {
+          [Op.in]: industryIds,
+        },
       });
     }
 
     if (searchFilters.includes("phone_number")) {
-      include.push({
-        model: models.CustomerPhoneNumber,
-        as: "customer_phone_numbers",
+      const phoneNumbers = await models.CustomerPhoneNumber.findAll({
         where: { phone_number: { [Op.substring]: q } },
-        required: true,
+      });
+      const customerIds = phoneNumbers.map(
+        (phoneNumber) => phoneNumber.customer_id
+      );
+
+      searchCriteria[Op.or].push({
+        id: {
+          [Op.in]: customerIds,
+        },
       });
     }
 
     if (searchFilters.includes("country")) {
-      include.push({
-        model: models.Address,
-        as: "addresses",
-        include: {
-          model: models.Country,
-          as: "country",
-          where: { country_name: { [Op.substring]: q } },
-          required: true,
+      const countries = await models.Country.findAll({
+        where: { country_name: { [Op.substring]: q } },
+      });
+
+      const countriesIds = countries.map((country) => country.id);
+
+      const addresses = await models.Address.findAll({
+        where: {
+          country_id: {
+            [Op.in]: countriesIds,
+          },
         },
-        required: true,
+      });
+
+      const customerIds = addresses.map((address) => address.customer_id);
+
+      searchCriteria[Op.or].push({
+        id: {
+          [Op.in]: customerIds,
+        },
       });
     }
 
     if (searchFilters.includes("user")) {
-      include.push({
-        model: models.User,
-        as: "user",
+      const users = await models.User.findAll({
         where: {
           [Op.or]: [
             { first_name: { [Op.substring]: q } },
             { last_name: { [Op.substring]: q } },
           ],
         },
-        required: true,
+      });
+
+      const userIds = users.map((user) => user.id);
+
+      searchCriteria[Op.or].push({
+        user_id: {
+          [Op.in]: userIds,
+        },
       });
     }
 
+    logger.info("search criteria", { searchCriteria });
+    logger.info("include", { include });
+
     customers = await Customer.findAll({
       where: searchCriteria,
-      include: include,
     });
   } else {
     customers = await Customer.findAll({
@@ -307,7 +336,7 @@ const searchForCustomer = async (query) => {
     });
   }
 
-  logger.info("custoers", { customers });
+  logger.info("customers", { customers });
 
   if (status !== undefined) {
     const customersIds = customers.map((customer) => customer.id);
