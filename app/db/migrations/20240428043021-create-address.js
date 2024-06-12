@@ -1,5 +1,4 @@
 "use strict";
-const { AddressType } = require("../../enums/index");
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -10,10 +9,14 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      address_type: {
-        type: Sequelize.ENUM,
-        values: AddressType.values,
-        defaultValue: AddressType.defaultValue,
+      address_line_1: {
+        type: Sequelize.STRING,
+      },
+      address_line_2: {
+        type: Sequelize.STRING,
+      },
+      postal_code: {
+        type: Sequelize.STRING,
       },
       customer_id: {
         type: Sequelize.INTEGER,
@@ -55,15 +58,8 @@ module.exports = {
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
       },
-      postal_code_id: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: "postal_codes",
-          key: "id",
-        },
-        onUpdate: "CASCADE",
-        onDelete: "CASCADE",
+      postal_code: {
+        type: Sequelize.STRING,
       },
       created_at: {
         allowNull: false,

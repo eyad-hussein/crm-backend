@@ -1,5 +1,5 @@
 const StatusType = {
-  values: ["prospect", "contact", "follow-up", "proposal", "closure"],
+  values: ["prospect", "contact", "follow_up", "proposal", "closure"],
   defaultValue: "prospect",
 };
 

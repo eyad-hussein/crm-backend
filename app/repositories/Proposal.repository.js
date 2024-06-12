@@ -1,8 +1,10 @@
+const logger = require("../utils/Logger");
+
 const { Proposal } = require("../db/models");
 
 const createProposal = async (body) => {
   try {
-    console.log("Creating proposal, repository");
+    logger.info("Creating proposal, repository");
     return await Proposal.create(body);
   } catch (error) {
     throw error;
@@ -11,7 +13,7 @@ const createProposal = async (body) => {
 
 const getProposals = async () => {
   try {
-    console.log("Getting proposals, repository");
+    logger.info("Getting proposals, repository");
     return await Proposal.findAll();
   } catch (error) {
     throw error;
@@ -20,7 +22,7 @@ const getProposals = async () => {
 
 const getProposalById = async () => {
   try {
-    console.log("Getting proposal by id, repository");
+    logger.info("Getting proposal by id, repository");
 
     return await Proposal.findByPk(id);
   } catch (error) {
@@ -30,7 +32,7 @@ const getProposalById = async () => {
 
 const deleteProposalByCustomerId = async (customerId) => {
   try {
-    console.log("Deleting proposal by customer id, repository");
+    logger.info("Deleting proposal by customer id, repository");
     return await Proposal.destroy({
       where: {
         customer_id: customerId,

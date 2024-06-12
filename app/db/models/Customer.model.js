@@ -1,6 +1,6 @@
 "use strict";
 const { Model } = require("sequelize");
-const { StatusType, LeadSourceType, SalutationType } = require("../../enums");
+const { StatusType, LeadSourceType } = require("../../enums");
 module.exports = (sequelize, DataTypes) => {
   class Customer extends Model {
     /**
@@ -9,9 +9,9 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Customer.belongsTo(models.Account, {
-        foreignKey: "account_id",
-        as: "account",
+      Customer.belongsTo(models.Industry, {
+        foreignKey: "industry_id",
+        as: "industry",
       });
 
       Customer.hasMany(models.Activity, {
@@ -24,10 +24,11 @@ module.exports = (sequelize, DataTypes) => {
         as: "addresses",
       });
 
-      Customer.belongsTo(models.CustomerPhoneNumber, {
-        foreignKey: "customer_phone_number_id",
-        as: "customer_phone_number",
+      Customer.hasMany(models.CustomerPhoneNumber, {
+        foreignKey: "customer_id",
+        as: "customer_phone_numbers",
       });
+
       Customer.belongsToMany(models.Service, {
         through: "customer_services",
         foreignKey: "customer_id",
@@ -64,41 +65,20 @@ module.exports = (sequelize, DataTypes) => {
         as: "proposal",
       });
 
-      Customer.belongsTo(models.Country, {
-        foreignKey: "country_id",
-        as: "country",
-      });
-
-      Customer.belongsTo(models.City, {
-        foreignKey: "city_id",
-        as: "city",
-      });
-
-      Customer.belongsTo(models.State, {
-        foreignKey: "state_id",
-        as: "state",
-      });
-
-      Customer.belongsTo(models.PostalCode, {
-        foreignKey: "postal_code_id",
-        as: "postal_code",
+      Customer.belongsTo(models.Image, {
+        foreignKey: "image_id",
+        as: "image",
       });
     }
   }
   Customer.init(
     {
-      first_name: DataTypes.STRING,
-      last_name: DataTypes.STRING,
-      title: DataTypes.STRING,
+      name: DataTypes.STRING,
       email: { type: DataTypes.STRING, unique: true },
       priority: DataTypes.INTEGER,
       description: DataTypes.TEXT,
       follow_up_date: DataTypes.DATE,
-      salutation: {
-        type: DataTypes.ENUM,
-        values: SalutationType.values,
-        defaultValue: SalutationType.defaultValue,
-      },
+      website: DataTypes.STRING,
       status: {
         type: DataTypes.ENUM,
         values: StatusType.values,
@@ -109,13 +89,6 @@ module.exports = (sequelize, DataTypes) => {
         values: LeadSourceType.values,
         defaultValue: LeadSourceType.defaultValue,
       },
-      country_id: DataTypes.INTEGER,
-      city_id: DataTypes.INTEGER,
-      user_id: DataTypes.INTEGER,
-      state_id: DataTypes.INTEGER,
-      customer_phone_number_id: DataTypes.INTEGER,
-      postal_code_id: DataTypes.INTEGER,
-      account_id: DataTypes.INTEGER,
     },
     {
       sequelize,

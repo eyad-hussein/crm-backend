@@ -23,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: ActivityType.defaultValue,
       },
       description: DataTypes.TEXT,
+      title: DataTypes.STRING,
     },
     {
       sequelize,

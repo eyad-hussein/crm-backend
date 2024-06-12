@@ -1,30 +1,26 @@
 "use strict";
-
-const { ActivityType } = require("../../enums");
-
+const { PhoneNumberType } = require("../../enums/index");
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("activities", {
+    await queryInterface.createTable("user_phone_numbers", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      activity_type: {
-        type: Sequelize.ENUM,
-        values: ActivityType.values,
-        defaultValue: ActivityType.defaultValue,
+      phone_number: {
+        type: Sequelize.STRING,
       },
-      description: {
-        type: Sequelize.TEXT,
+      extension: {
+        type: Sequelize.STRING,
       },
-      customer_id: {
+      user_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: "customers",
+          model: "users",
           key: "id",
         },
         onUpdate: "CASCADE",
@@ -43,6 +39,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("activities");
+    await queryInterface.dropTable("user_phone_numbers");
   },
 };

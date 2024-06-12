@@ -6,6 +6,11 @@ const getCities = asyncHandler(async (req, res, next) => {
   res.json(await cityRepository.getCities());
 });
 
+const getCitiesByStateId = asyncHandler(async (req, res, next) => {
+  const { stateId } = req.params;
+  res.json(await cityRepository.getCitiesByStateId(stateId));
+});
+
 const getCityById = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
   res.json(await cityRepository.getCityById(id));
@@ -43,4 +48,5 @@ module.exports = {
   patchCity,
   deleteCity,
   createCity,
+  getCitiesByStateId,
 };

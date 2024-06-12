@@ -1,6 +1,5 @@
 "use strict";
 const { Model } = require("sequelize");
-const { PhoneNumberType } = require("../../enums");
 module.exports = (sequelize, DataTypes) => {
   class CustomerPhoneNumber extends Model {
     /**
@@ -9,21 +8,20 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      CustomerPhoneNumber.hasOne(models.Customer, {
-        foreignKey: "customer_phone_number_id",
+      CustomerPhoneNumber.belongsTo(models.Customer, {
+        foreignKey: "customer_id",
         as: "customer",
+      });
+
+      CustomerPhoneNumber.belongsTo(models.Extension, {
+        foreignKey: "extension_id",
+        as: "extension",
       });
     }
   }
   CustomerPhoneNumber.init(
     {
       phone_number: DataTypes.STRING,
-      extension: DataTypes.STRING,
-      type_of_number: {
-        type: DataTypes.ENUM,
-        values: PhoneNumberType.values,
-        defaultValue: PhoneNumberType.defaultValue,
-      },
     },
     {
       sequelize,

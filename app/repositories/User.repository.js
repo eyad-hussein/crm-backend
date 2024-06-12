@@ -1,14 +1,10 @@
-const { User, UserPhoneNumber, Customer } = require("../db/models");
+const { User, Customer } = require("../db/models");
 const models = require("../db/models");
 const { changeInputToModelName } = require("../utils/Parser.utils");
 
 const GET_USER_QUERY = {
   attributes: ["id", "first_name", "last_name", "user_name", "email", "title"],
   include: [
-    {
-      model: UserPhoneNumber,
-      as: "user_phone_numbers",
-    },
     {
       model: Customer,
       attributes: ["id", "first_name", "last_name"],
@@ -23,7 +19,13 @@ const createUser = async (body) => {
 };
 
 const getUsers = async () => {
-  return await User.findAll(GET_USER_QUERY);
+  return await User.findAll();
+};
+
+const getUsersByFilters = async (filterOptions) => {
+  return await User.findAll({
+    where: filterOptions,
+  });
 };
 
 const getUserById = async (id) => {
@@ -63,4 +65,5 @@ module.exports = {
   patchUser,
   deleteUser,
   createUser,
+  getUsersByFilters,
 };

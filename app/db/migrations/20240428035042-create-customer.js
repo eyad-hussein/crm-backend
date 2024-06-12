@@ -1,6 +1,6 @@
 "use strict";
 
-const { StateType } = require("../../enums");
+const { StatusType, LeadSourceType } = require("../../enums");
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -12,15 +12,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      first_name: {
-        allowNull: false,
-        type: Sequelize.STRING,
-      },
-      last_name: {
-        allowNull: false,
-        type: Sequelize.STRING,
-      },
-      title: {
+      name: {
         allowNull: false,
         type: Sequelize.STRING,
       },
@@ -38,16 +30,24 @@ module.exports = {
       follow_up_date: {
         type: Sequelize.DATE,
       },
-      state: {
-        type: Sequelize.ENUM,
-        values: StateType.values,
-        defaultValue: StateType.defaultValue,
+      website: {
+        type: Sequelize.STRING,
       },
-      account_id: {
+      status: {
+        type: Sequelize.ENUM,
+        values: StatusType.values,
+        defaultValue: StatusType.defaultValue,
+      },
+      lead_source: {
+        type: Sequelize.ENUM,
+        values: LeadSourceType.values,
+        defaultValue: LeadSourceType.defaultValue,
+      },
+      industry_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: "accounts",
+          model: "industries",
           key: "id",
         },
         onUpdate: "CASCADE",
@@ -62,6 +62,16 @@ module.exports = {
         },
         onDelete: "CASCADE",
         onDelete: "CASCADE",
+      },
+      image_id: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+        references: {
+          model: "images",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL",
       },
       created_at: {
         allowNull: false,

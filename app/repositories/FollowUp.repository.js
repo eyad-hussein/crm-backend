@@ -1,8 +1,10 @@
+const logger = require("../utils/Logger");
+
 const { FollowUp } = require("../db/models");
 
 const createFollowUp = async (body) => {
   try {
-    console.log("Creating follow up, repository");
+    logger.info("Creating follow up, repository");
     return await FollowUp.create(body);
   } catch (error) {
     throw error;
@@ -11,7 +13,7 @@ const createFollowUp = async (body) => {
 
 const getFollowUps = async () => {
   try {
-    console.log("Getting follow ups, repository");
+    logger.info("Getting follow ups, repository");
     return await FollowUp.findAll();
   } catch (error) {
     throw error;
@@ -20,7 +22,7 @@ const getFollowUps = async () => {
 
 const getFollowUpById = async () => {
   try {
-    console.log("Getting follow up by id, repository");
+    logger.info("Getting follow up by id, repository");
     return await FollowUp.findByPk(id);
   } catch (error) {
     throw error;
@@ -29,7 +31,7 @@ const getFollowUpById = async () => {
 
 const deleteFollowUpByCustomerId = async (customerId) => {
   try {
-    console.log("Deleting follow up by customer id, repository");
+    logger.info("Deleting follow up by customer id, repository");
     return await FollowUp.destroy({
       where: {
         customer_id: customerId,

@@ -1,6 +1,5 @@
 "use strict";
 const { Model } = require("sequelize");
-const { ServiceType } = require("../../enums");
 module.exports = (sequelize, DataTypes) => {
   class Service extends Model {
     /**
@@ -18,9 +17,7 @@ module.exports = (sequelize, DataTypes) => {
   Service.init(
     {
       service_name: {
-        type: DataTypes.ENUM,
-        values: ServiceType.values,
-        defaultValue: ServiceType.defaultValue,
+        type: DataTypes.STRING,
       },
       service_cost: DataTypes.DOUBLE,
     },

@@ -1,10 +1,11 @@
+const logger = require("../utils/Logger");
 const { Closure, Customer } = require("../db/models");
 
 const { GET_CUSTOMER_QUERY } = require("./queries");
 
 const createClosure = async (body) => {
   try {
-    console.log("Creating closure, repository");
+    logger.info("Creating closure, repository");
 
     return await Closure.create(body);
   } catch (error) {
@@ -14,7 +15,7 @@ const createClosure = async (body) => {
 
 const getClosures = async () => {
   try {
-    console.log("Getting closures, repository");
+    logger.info("Getting closures, repository");
     return await Closure.findAll({
       include: [
         {
@@ -31,7 +32,7 @@ const getClosures = async () => {
 
 const getClosureById = async () => {
   try {
-    console.log("Getting closure by id, repository");
+    logger.info("Getting closure by id, repository");
     return await Closure.findByPk(id);
   } catch (error) {
     throw error;
@@ -40,7 +41,7 @@ const getClosureById = async () => {
 
 const deleteClosureByCustomerId = async (customerId) => {
   try {
-    console.log("Deleting closure by customer id, repository");
+    logger.info("Deleting closure by customer id, repository");
 
     return await Closure.destroy({
       where: {

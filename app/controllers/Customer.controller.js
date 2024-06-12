@@ -1,3 +1,5 @@
+const logger = require("../utils/Logger");
+
 const { CustomerStatusType } = require("../enums");
 const {
   customerRepository,
@@ -12,7 +14,7 @@ const asyncHandler = require("express-async-handler");
 
 const getCustomers = asyncHandler(async (req, res, next) => {
   try {
-    console.log("Getting customers, controller");
+    logger.info("Getting customers, controller");
     res.json(await customerRepository.getCustomers());
   } catch (error) {
     return error;
@@ -49,9 +51,11 @@ const deleteCustomer = asyncHandler(async (req, res, next) => {
 
 const createCustomer = asyncHandler(async (req, res, next) => {
   try {
-    console.log("creating customer, controller");
+    logger.info("creating customer, controller");
     const { body } = req;
     const { status } = body;
+
+    logger.info("body, and status", { body, status });
 
     const customer = await customerRepository.createCustomer(body);
     const { id } = customer;
@@ -66,7 +70,7 @@ const createCustomer = asyncHandler(async (req, res, next) => {
 
 const patchCustomerStatus = asyncHandler(async (req, res, next) => {
   try {
-    console.log("patching customer status, controller");
+    logger.info("patching customer status, controller");
     const { id, status } = req.params;
     _changeCustomerStatus(id, status);
     res.json("Status updated successfully");
@@ -77,7 +81,7 @@ const patchCustomerStatus = asyncHandler(async (req, res, next) => {
 
 const searchForCustomer = asyncHandler(async (req, res, next) => {
   try {
-    console.log("searching for customer, controller");
+    logger.info("searching for customer, controller");
     res.json(await customerRepository.searchForCustomer(req.query));
   } catch (error) {
     throw error;
@@ -86,8 +90,17 @@ const searchForCustomer = asyncHandler(async (req, res, next) => {
 
 const filterCustomers = asyncHandler(async (req, res, next) => {
   try {
-    console.log("filtering customers, controller");
+    logger.info("filtering customers, controller");
     res.json(await customerRepository.filterCustomers(req.body));
+  } catch (error) {
+    throw error;
+  }
+});
+
+const sortCustomers = asyncHandler(async (req, res, next) => {
+  try {
+    logger.info("sorting customers, controller");
+    res.json(await customerRepository.sortCustomers(req.body));
   } catch (error) {
     throw error;
   }
@@ -95,7 +108,7 @@ const filterCustomers = asyncHandler(async (req, res, next) => {
 
 const _createRecordBasedOnStatus = async (status, customerId) => {
   try {
-    console.log("creating record based on status, controller");
+    logger.info("creating record based on status, controller");
     const body = {
       customer_id: customerId,
     };
@@ -129,7 +142,7 @@ const _createRecordBasedOnStatus = async (status, customerId) => {
 
 const _deleteCustomerByStatus = async (status, customerId) => {
   try {
-    console.log("deleting customer by status, controller");
+    logger.info("deleting customer by status, controller");
 
     switch (status) {
       case CustomerStatusType.FOLLOW_UP:
@@ -144,7 +157,7 @@ const _deleteCustomerByStatus = async (status, customerId) => {
       case CustomerStatusType.CONTACT:
         await contactRepository.deleteContactByCustomerId(customerId);
         break;
-      case CustomerStatusType.PROPSAL:
+      case CustomerStatusType.PROPOSAL:
         await proposalRepository.deleteProposalByCustomerId(customerId);
         break;
       case CustomerStatusType.CUSTOMER:
@@ -158,12 +171,12 @@ const _deleteCustomerByStatus = async (status, customerId) => {
 
 const _updateCustomerByStatus = async (status, customerId) => {
   try {
-    console.log("updating customer by status, controller");
+    logger.info("updating customer by status, controller");
     const body = {
       customer_id: customerId,
     };
 
-    console.log(body, status);
+    logger.info("body and status", { body, status });
 
     switch (status) {
       case CustomerStatusType.FOLLOW_UP:
@@ -178,7 +191,7 @@ const _updateCustomerByStatus = async (status, customerId) => {
       case CustomerStatusType.CONTACT:
         await contactRepository.createContact(body);
         break;
-      case CustomerStatusType.PROPSAL:
+      case CustomerStatusType.PROPOSAL:
         await proposalRepository.createProposal(body);
         break;
       case CustomerStatusType.CUSTOMER:
@@ -192,7 +205,7 @@ const _updateCustomerByStatus = async (status, customerId) => {
 
 const _changeCustomerStatus = async (customerId, newStatus) => {
   try {
-    console.log("changing customer status, controller");
+    logger.info("changing customer status, controller");
     const customer = await customerRepository.getCustomerById(customerId);
     const { status } = customer;
     let oldStatus = status;
@@ -215,4 +228,5 @@ module.exports = {
   patchCustomerStatus,
   searchForCustomer,
   filterCustomers,
+  sortCustomers,
 };

@@ -5,11 +5,13 @@ const prospectController = require("./Prospect.controller");
 const contactController = require("./Contact.controller");
 const proposalController = require("./Proposal.controller");
 const userController = require("./User.controller");
-const accountController = require("./Account.controller");
+const industryController = require("./Industry.controller");
 const countryController = require("./Country.controller");
 const customerPhoneNumberController = require("./CustomerPhoneNumber.controller");
 const cityController = require("./City.controller");
 const stateController = require("./State.controller");
+const activityController = require("./Activity.controller");
+const extensionController = require("./Extension.controller");
 
 module.exports = {
   customerController,
@@ -19,9 +21,11 @@ module.exports = {
   contactController,
   proposalController,
   userController,
-  accountController,
+  industryController,
   countryController,
   customerPhoneNumberController,
   cityController,
   stateController,
+  activityController,
+  extensionController,
 };

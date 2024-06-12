@@ -1,27 +1,20 @@
 const {
   CustomerPhoneNumber,
   User,
-  Account,
+  Industry,
   Service,
-  Country,
-  PostalCode,
+  Activity,
+  Address,
 } = require("../../db/models");
 
 const GET_CUSTOMER_QUERY = {
   include: [
-    {
-      model: CustomerPhoneNumber,
-      as: "customer_phone_number",
-    },
-    {
-      model: User,
-      attributes: ["id", "first_name", "last_name", "title"],
-      as: "user",
-    },
-    { model: Account, as: "account" },
+    { model: CustomerPhoneNumber, as: "customer_phone_numbers" },
+    { model: User, as: "user" },
+    { model: Industry, as: "industry" },
     { model: Service, as: "services" },
-    { model: Country, as: "country" },
-    { model: PostalCode, as: "postal_code" },
+    { model: Activity, as: "activities" },
+    { model: Address, as: "addresses", include: ["city", "state", "country"] },
   ],
 };
 

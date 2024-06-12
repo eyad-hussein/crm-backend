@@ -1,6 +1,5 @@
 "use strict";
 const { Model } = require("sequelize");
-const { PhoneNumberType } = require("../../enums");
 module.exports = (sequelize, DataTypes) => {
   class UserPhoneNumber extends Model {
     /**
@@ -19,11 +18,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       phone_number: DataTypes.STRING,
       extension: DataTypes.STRING,
-      type_of_number: {
-        type: DataTypes.ENUM,
-        values: PhoneNumberType.values,
-        defaultValue: PhoneNumberType.defaultValue,
-      },
+
       user_id: DataTypes.INTEGER,
     },
     {
