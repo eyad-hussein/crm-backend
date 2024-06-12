@@ -4,6 +4,7 @@ const SubscriptionStatusType = require("./SubscriptionStatusType.enum");
 const ActivityType = require("./ActivityType.enum");
 const CustomerStatusType = require("./CustomerStatusType.enum");
 const StatusType = require("./StatusType.enum");
+const SortingCategoryType = require("./SortingCategoryType.enum");
 
 module.exports = {
   LeadStatusType,
@@ -12,4 +13,5 @@ module.exports = {
   ActivityType,
   CustomerStatusType,
   StatusType,
+  SortingCategoryType,
 };

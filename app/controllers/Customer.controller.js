@@ -97,6 +97,15 @@ const filterCustomers = asyncHandler(async (req, res, next) => {
   }
 });
 
+const sortCustomers = asyncHandler(async (req, res, next) => {
+  try {
+    logger.info("sorting customers, controller");
+    res.json(await customerRepository.sortCustomers(req.body));
+  } catch (error) {
+    throw error;
+  }
+});
+
 const _createRecordBasedOnStatus = async (status, customerId) => {
   try {
     logger.info("creating record based on status, controller");
@@ -219,4 +228,5 @@ module.exports = {
   patchCustomerStatus,
   searchForCustomer,
   filterCustomers,
+  sortCustomers,
 };

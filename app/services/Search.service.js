@@ -1,15 +1,18 @@
+const { Op } = require("sequelize");
 const logger = require("../utils/Logger");
-const {
-  userRepository,
-  customerPhoneNumberRepository,
-  countryRepository,
-  industryRepository,
-  addressRepository,
-} = require("../repositories");
 
-const createSearchCriteria = async (searchFilters, query, status) => {
+const countryRepository = require("../repositories/Country.repository");
+const customerPhoneNumberRepository = require("../repositories/CustomerPhoneNumber.repository");
+const industryRepository = require("../repositories/Industry.repository");
+const userRepository = require("../repositories/User.repository");
+const addressRepository = require("../repositories/Address.repository");
+
+const createSearchCriteria = async (searchFilters, query) => {
+  logger.info({
+    message: "Creating search criteria",
+    searchFilters,
+  });
   let searchCriteria = {};
-  logger.info("search filters after", { searchFilters });
 
   searchFilters = searchFilters != "undefined" ? searchFilters.split(",") : [];
 
@@ -105,4 +108,8 @@ const createSearchCriteria = async (searchFilters, query, status) => {
   }
 
   return searchCriteria;
+};
+
+module.exports = {
+  createSearchCriteria,
 };

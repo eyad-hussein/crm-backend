@@ -1,12 +1,10 @@
 const { Customer, CustomerService } = require("../db/models");
 const models = require("../db/models");
 const { GET_CUSTOMER_QUERY } = require("./queries");
-const {
-  changeInputToModelName,
-  changeToSingular,
-} = require("../utils/Parser.utils");
-const { Op, where } = require("sequelize");
+const { changeInputToModelName } = require("../utils/Parser.utils");
+const { Op } = require("sequelize");
 const logger = require("../utils/Logger");
+const { searchService, filterService, sortService } = require("../services");
 
 const createCustomer = async (body) => {
   const t = await models.sequelize.transaction();
@@ -126,7 +124,6 @@ const putCustomer = async (id, body) => {
         const modelName = changeInputToModelName(association);
         const Model = models[modelName];
 
-        // Delete existing associations
         if (association === "services") {
           await CustomerService.destroy({
             where: { customer_id: id },
@@ -139,7 +136,6 @@ const putCustomer = async (id, body) => {
           });
         }
 
-        // Create new associations
         for (const associatedData of body[association]) {
           if (association === "services") {
             await CustomerService.create(
@@ -184,21 +180,10 @@ const filterCustomers = async (queries) => {
 
   logger.info("queries", { queries });
 
-  const filterCriteria = {};
+  const filterCriteria = await filterService.createFilterCriteria(queries);
 
-  if (queries.first_name)
-    filterCriteria.first_name = { [Op.substring]: queries.first_name };
-  if (queries.last_name)
-    filterCriteria.last_name = { [Op.substring]: queries.last_name };
-  if (queries.email) filterCriteria.email = { [Op.substring]: queries.email };
-  if (queries.title) filterCriteria.title = { [Op.substring]: queries.title };
-  if (queries.priority) filterCriteria.priority = queries.priority;
-  if (queries.lead_source) filterCriteria.lead_source = queries.lead_source;
+  logger.info("performing filter query");
 
-  if (queries.status) {
-    const status = changeToSingular(queries.status);
-    filterCriteria.status = status;
-  }
   const customers = await Customer.findAll({
     where: filterCriteria,
   });
@@ -220,121 +205,22 @@ const filterCustomers = async (queries) => {
     });
   }
 
-  return await Customer.findAll({
-    where: filterCriteria,
-  });
+  return customers;
 };
 
 const searchForCustomer = async (query) => {
   logger.info("searching for customer, repository");
   logger.info("query", { query });
   let { query: q, status, searchFilters } = query;
-  let customers = [];
 
-  searchFilters = searchFilters != "undefined" ? searchFilters.split(",") : [];
+  const searchCriteria = await searchService.createSearchCriteria(
+    searchFilters,
+    q
+  );
 
-  logger.info("search filters after", { searchFilters });
-
-  if (searchFilters.length) {
-    const searchCriteria = {
-      [Op.or]: [
-        searchFilters.includes("name") && { name: { [Op.substring]: q } },
-        searchFilters.includes("follow_up_date") && {
-          follow_up_date: { [Op.substring]: q },
-        },
-        searchFilters.includes("lead_source") && {
-          lead_source: { [Op.substring]: q },
-        },
-        searchFilters.includes("email") && { email: { [Op.substring]: q } },
-      ],
-    };
-
-    const include = [];
-
-    if (searchFilters.includes("industry")) {
-      const industries = await models.Industry.findAll({
-        where: { industry_name: { [Op.substring]: q } },
-      });
-      const industryIds = industries.map((industry) => industry.id);
-
-      searchCriteria[Op.or].push({
-        industry_id: {
-          [Op.in]: industryIds,
-        },
-      });
-    }
-
-    if (searchFilters.includes("phone_number")) {
-      const phoneNumbers = await models.CustomerPhoneNumber.findAll({
-        where: { phone_number: { [Op.substring]: q } },
-      });
-      const customerIds = phoneNumbers.map(
-        (phoneNumber) => phoneNumber.customer_id
-      );
-
-      searchCriteria[Op.or].push({
-        id: {
-          [Op.in]: customerIds,
-        },
-      });
-    }
-
-    if (searchFilters.includes("country")) {
-      const countries = await models.Country.findAll({
-        where: { country_name: { [Op.substring]: q } },
-      });
-
-      const countriesIds = countries.map((country) => country.id);
-
-      const addresses = await models.Address.findAll({
-        where: {
-          country_id: {
-            [Op.in]: countriesIds,
-          },
-        },
-      });
-
-      const customerIds = addresses.map((address) => address.customer_id);
-
-      searchCriteria[Op.or].push({
-        id: {
-          [Op.in]: customerIds,
-        },
-      });
-    }
-
-    if (searchFilters.includes("user")) {
-      const users = await models.User.findAll({
-        where: {
-          [Op.or]: [
-            { first_name: { [Op.substring]: q } },
-            { last_name: { [Op.substring]: q } },
-          ],
-        },
-      });
-
-      const userIds = users.map((user) => user.id);
-
-      searchCriteria[Op.or].push({
-        user_id: {
-          [Op.in]: userIds,
-        },
-      });
-    }
-
-    logger.info("search criteria", { searchCriteria });
-    logger.info("include", { include });
-
-    customers = await Customer.findAll({
-      where: searchCriteria,
-    });
-  } else {
-    customers = await Customer.findAll({
-      where: {
-        name: { [Op.substring]: q },
-      },
-    });
-  }
+  const customers = await Customer.findAll({
+    where: searchCriteria,
+  });
 
   logger.info("customers", { customers });
 
@@ -358,6 +244,24 @@ const searchForCustomer = async (query) => {
   return customers;
 };
 
+const sortCustomers = async (body) => {
+  try {
+    logger.info("sorting customers, repository");
+    const { customerIds, sortParams } = body;
+
+    const query = sortService.buildQuery(customerIds, sortParams);
+
+    const [customers, metadata] = await models.sequelize.query(query);
+
+    const sortedIds = customers.map((customer) => customer.customer_id);
+    logger.info({ message: "sortedIds", sortedIds });
+    return sortedIds;
+  } catch (error) {
+    logger.error("Error sorting customers:");
+    throw error;
+  }
+};
+
 module.exports = {
   getCustomers,
   getCustomerById,
@@ -367,4 +271,5 @@ module.exports = {
   createCustomer,
   searchForCustomer,
   filterCustomers,
+  sortCustomers,
 };

@@ -1,4 +1,5 @@
 const { Country } = require("../db/models");
+const logger = require("../utils/Logger");
 
 const createCountry = async (body) => {
   const country = await Country.create(body);
@@ -10,6 +11,8 @@ const getCountries = async () => {
 };
 
 const getCountriesByFilters = async (filterOptions) => {
+  logger.info("Getting countries by filters, repository");
+
   return await Country.findAll({
     where: filterOptions,
   });

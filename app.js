@@ -2,7 +2,7 @@
 
 require("dotenv").config();
 const express = require("express");
-const morganMiddleware = require("./app/middlewares/Morgan.middleware");
+const { morganMiddleware } = require("./app/middlewares");
 const logger = require("./app/utils/Logger");
 const app = express();
 
