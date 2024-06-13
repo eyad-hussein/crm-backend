@@ -4,13 +4,17 @@ const { activityRepository } = require("../repositories");
 const asyncHandler = require("express-async-handler");
 
 const getActivities = asyncHandler(async (req, res, next) => {
-  const { customerId } = req.params;
-  res.json(await activityRepository.getActivities(customerId));
+  res.json(await activityRepository.getActivities());
 });
 
 const getActivityById = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
   res.json(await activityRepository.getActivityById(id));
+});
+
+const getActivitiesByCustomerId = asyncHandler(async (req, res, next) => {
+  const { customerId } = req.params;
+  res.json(await activityRepository.getActivitiesByCustomerId(customerId));
 });
 
 const patchActivity = asyncHandler(async (req, res, next) => {
@@ -49,6 +53,7 @@ const createActivity = asyncHandler(async (req, res, next) => {
 module.exports = {
   getActivities,
   getActivityById,
+  getActivitiesByCustomerId,
   patchActivity,
   deleteActivity,
   createActivity,

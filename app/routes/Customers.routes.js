@@ -5,7 +5,7 @@ const closuresRouter = require("./Closures.routes");
 const prospectsRouter = require("./Prospects.routes");
 const contactsRouter = require("./Contacts.routes");
 const proposalsRouter = require("./Proposals.routes");
-const activitiesRouter = require("./Activities.routes");
+const { activityController } = require("../controllers");
 
 const router = express.Router();
 router.use("/follow-ups", followUpsRouter);
@@ -14,7 +14,11 @@ router.use("/prospects", prospectsRouter);
 router.use("/contacts", contactsRouter);
 router.use("/proposals", proposalsRouter);
 
-router.use("/:customerId/activities", activitiesRouter);
+router.get(
+  "/:customerId/activities",
+  activityController.getActivitiesByCustomerId
+);
+router.post("/:customerId/activities", activityController.createActivity);
 
 router.post("/", customerController.createCustomer);
 

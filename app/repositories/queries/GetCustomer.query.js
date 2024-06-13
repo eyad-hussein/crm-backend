@@ -13,7 +13,7 @@ const GET_CUSTOMER_QUERY = {
     { model: User, as: "user" },
     { model: Industry, as: "industry" },
     { model: Service, as: "services" },
-    { model: Activity, as: "activities" },
+    // { model: Activity, as: "activities" },
     { model: Address, as: "addresses", include: ["city", "state", "country"] },
   ],
 };

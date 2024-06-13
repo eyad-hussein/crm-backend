@@ -12,6 +12,9 @@ const citiesRouter = require("./Cities.routes");
 const statesRouter = require("./States.routes");
 const activitiesRouter = require("./Activities.routes");
 const extensionsRouter = require("./Extensions.routes");
+const tasksRouter = require("./Tasks.routes");
+const meetingsRouter = require("./Meetings.routes");
+const notesRouter = require("./Notes.routes");
 
 module.exports = {
   customersRouter,
@@ -28,4 +31,7 @@ module.exports = {
   statesRouter,
   activitiesRouter,
   extensionsRouter,
+  tasksRouter,
+  meetingsRouter,
+  notesRouter,
 };
