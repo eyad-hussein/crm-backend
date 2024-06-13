@@ -12,6 +12,9 @@ const cityController = require("./City.controller");
 const stateController = require("./State.controller");
 const activityController = require("./Activity.controller");
 const extensionController = require("./Extension.controller");
+const taskController = require("./Task.controller");
+const meetingController = require("./Meeting.controller");
+const noteController = require("./Note.controller");
 
 module.exports = {
   customerController,
@@ -28,4 +31,7 @@ module.exports = {
   stateController,
   activityController,
   extensionController,
+  taskController,
+  meetingController,
+  noteController,
 };

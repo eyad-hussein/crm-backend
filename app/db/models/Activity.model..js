@@ -13,6 +13,21 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "customer_id",
         as: "customer",
       });
+
+      Activity.hasOne(models.Task, {
+        foreignKey: "activity_id",
+        as: "task",
+      });
+
+      Activity.hasOne(models.Meeting, {
+        foreignKey: "activity_id",
+        as: "meeting",
+      });
+
+      Activity.hasOne(models.Note, {
+        foreignKey: "activity_id",
+        as: "note",
+      });
     }
   }
   Activity.init(

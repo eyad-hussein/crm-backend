@@ -1,5 +1,6 @@
 const { User, Customer } = require("../db/models");
 const models = require("../db/models");
+const logger = require("../utils/Logger");
 const { changeInputToModelName } = require("../utils/Parser.utils");
 
 const GET_USER_QUERY = {
@@ -14,8 +15,16 @@ const GET_USER_QUERY = {
 };
 
 const createUser = async (body) => {
-  const user = await User.create(body);
-  return user;
+  try {
+    logger.info("Creating user, repository");
+    const t = await models.sequelize.transaction();
+    const user = await User.create(body, { transaction: t });
+    await t.commit();
+    return user;
+  } catch (error) {
+    logger.error("Error creating user, repository");
+    throw error;
+  }
 };
 
 const getUsers = async () => {
@@ -33,21 +42,17 @@ const getUserById = async (id) => {
 };
 
 const patchUser = async (id, body) => {
-  const user = await User.findByPk(id);
+  try {
+    logger.info("Patching user, repository");
 
-  await user.update(body);
+    const t = await models.sequelize.transaction();
 
-  const associations = User.associations;
-
-  for (const association of Object.keys(associations)) {
-    if (body[association]) {
-      const modelName = changeInputToModelName(association);
-      await models[modelName].update(body[association], {
-        where: {
-          id: body[association]["id"],
-        },
-      });
-    }
+    const user = await User.findByPk(id, { transaction: t });
+    await user.update(body, { transaction: t });
+    await t.commit();
+  } catch (error) {
+    logger.error("Error patching user, repository");
+    throw error;
   }
 };
 
