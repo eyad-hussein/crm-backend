@@ -1,5 +1,4 @@
 "use strict";
-const { PhoneNumberType } = require("../../enums/index");
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -13,8 +12,15 @@ module.exports = {
       phone_number: {
         type: Sequelize.STRING,
       },
-      extension: {
-        type: Sequelize.STRING,
+      extension_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: "extensions",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
       user_id: {
         type: Sequelize.INTEGER,

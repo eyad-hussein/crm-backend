@@ -1,8 +1,18 @@
 const { Industry } = require("../db/models");
+const logger = require("../utils/Logger");
+const db = require("../db/models");
 
 const createIndustry = async (body) => {
-  const industry = await Industry.create(body);
-  return industry;
+  try {
+    logger.info("Creating industry, repository");
+    const t = await db.sequelize.transaction();
+    const industry = await Industry.create(body, { transaction: t });
+    t.commit();
+    return industry;
+  } catch (error) {
+    logger.error("Error creating industry");
+    throw error;
+  }
 };
 
 const getIndustries = async () => {

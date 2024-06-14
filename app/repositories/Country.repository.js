@@ -1,9 +1,18 @@
 const { Country } = require("../db/models");
 const logger = require("../utils/Logger");
+const db = require("../db/models");
 
 const createCountry = async (body) => {
-  const country = await Country.create(body);
-  return country;
+  try {
+    logger.info("Creating country, repository");
+    const t = await db.sequelize.transaction();
+    const country = await Country.create(body, { transaction: t });
+    t.commit();
+    return country;
+  } catch (error) {
+    logger.error("Error creating country");
+    throw error;
+  }
 };
 
 const getCountries = async () => {

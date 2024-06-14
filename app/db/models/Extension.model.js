@@ -14,6 +14,11 @@ module.exports = (sequelize, DataTypes) => {
         as: "customer_phone_numbers",
       });
 
+      Extension.hasMany(models.UserPhoneNumber, {
+        foreignKey: "extension_id",
+        as: "User_phone_numbers",
+      });
+
       Extension.belongsTo(models.Country, {
         foreignKey: "country_id",
         as: "country",

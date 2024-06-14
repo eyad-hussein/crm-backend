@@ -1,12 +1,16 @@
 const logger = require("../utils/Logger");
-
+const db = require("../db/models");
 const { State } = require("../db/models");
 
 const createState = async (body) => {
   try {
     logger.info("Creating state, repository");
-    return await State.create(body);
+    const t = await db.sequelize.transaction();
+    const state = await State.create(body, { transaction: t });
+    t.commit();
+    return state;
   } catch (error) {
+    logger.error("Error creating state");
     throw error;
   }
 };
@@ -35,7 +39,7 @@ const getStatesByCountryId = async (countryId) => {
   }
 };
 
-const getStateById = async () => {
+const getStateById = async (id) => {
   try {
     logger.info("Getting state by id, repository");
     return await State.findByPk(id);

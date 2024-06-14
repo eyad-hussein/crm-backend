@@ -14,6 +14,11 @@ module.exports = (sequelize, DataTypes) => {
         as: "customer",
       });
 
+      Activity.belongsTo(models.User, {
+        foreignKey: "user_id",
+        as: "user",
+      });
+
       Activity.hasOne(models.Task, {
         foreignKey: "activity_id",
         as: "task",

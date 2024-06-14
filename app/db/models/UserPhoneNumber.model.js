@@ -12,14 +12,15 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "user_id",
         as: "user",
       });
+      UserPhoneNumber.belongsTo(models.Extension, {
+        foreignKey: "extension_id",
+        as: "extension",
+      });
     }
   }
   UserPhoneNumber.init(
     {
       phone_number: DataTypes.STRING,
-      extension: DataTypes.STRING,
-
-      user_id: DataTypes.INTEGER,
     },
     {
       sequelize,

@@ -28,17 +28,9 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "image_id",
         as: "image",
       });
-      User.hasMany(models.Task, {
-        foreignKey: "user_id",
-        as: "tasks",
-      });
-      User.hasMany(models.Meeting, {
-        foreignKey: "user_id",
-        as: "meetings",
-      });
-      User.hasMany(models.Note, {
-        foreignKey: "user_id",
-        as: "notes",
+      User.belongsTo(models.Department, {
+        foreignKey: "department_id",
+        as: "department",
       });
     }
   }
@@ -50,6 +42,11 @@ module.exports = (sequelize, DataTypes) => {
       email: DataTypes.STRING,
       password: DataTypes.STRING,
       title: DataTypes.STRING,
+      gender: {
+        type: DataTypes.ENUM,
+        values: ["male", "female"],
+        defaultValue: "male",
+      },
     },
     {
       sequelize,

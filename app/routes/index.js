@@ -15,6 +15,7 @@ const extensionsRouter = require("./Extensions.routes");
 const tasksRouter = require("./Tasks.routes");
 const meetingsRouter = require("./Meetings.routes");
 const notesRouter = require("./Notes.routes");
+const userPhoneNumbersRouter = require("./UserPhoneNumbers.routes");
 
 module.exports = {
   customersRouter,
@@ -34,4 +35,5 @@ module.exports = {
   tasksRouter,
   meetingsRouter,
   notesRouter,
+  userPhoneNumbersRouter,
 };
