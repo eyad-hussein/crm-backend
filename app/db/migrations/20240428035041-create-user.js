@@ -1,36 +1,69 @@
 "use strict";
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("user_phone_numbers", {
+    await queryInterface.createTable("users", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      phone_number: {
+      first_name: {
         type: Sequelize.STRING,
       },
-      extension_id: {
+      last_name: {
+        type: Sequelize.STRING,
+      },
+      user_name: {
+        type: Sequelize.STRING,
+        unique: true,
+      },
+      email: {
+        type: Sequelize.STRING,
+        unique: true,
+      },
+      password: {
+        type: Sequelize.STRING,
+      },
+      title: {
+        type: Sequelize.STRING,
+      },
+      gender: {
+        type: Sequelize.ENUM,
+        values: ["male", "female"],
+        defaultValue: ["male"],
+      },
+      image_id: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: {
-          model: "extensions",
+          model: "images",
           key: "id",
         },
         onUpdate: "CASCADE",
-        onDelete: "CASCADE",
+        onDelete: "SET NULL",
       },
-      user_id: {
+      department_id: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
+        references: {
+          model: "departments",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL",
+      },
+      manager_id: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
         references: {
           model: "users",
           key: "id",
         },
         onUpdate: "CASCADE",
-        onDelete: "CASCADE",
+        onDelete: "SET NULL",
       },
       created_at: {
         allowNull: false,
@@ -44,7 +77,8 @@ module.exports = {
       },
     });
   },
+
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("user_phone_numbers");
+    await queryInterface.dropTable("users");
   },
 };

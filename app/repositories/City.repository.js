@@ -1,10 +1,14 @@
 const logger = require("../utils/Logger");
+const db = require("../db/models");
 const { City } = require("../db/models");
 
 const createCity = async (body) => {
   try {
     logger.info("Creating city, repository");
-    return await City.create(body);
+    const t = await db.sequelize.transaction();
+    const city = await City.create(body);
+    t.commit();
+    return city;
   } catch (error) {
     throw error;
   }

@@ -1,7 +1,9 @@
 const express = require("express");
-const { userController } = require("../controllers");
+const { userController, activityController } = require("../controllers");
 
 const router = express.Router();
+
+router.get("/:userId/activities", activityController.getActivitiesByUserId);
 
 router.post("/", userController.createUser);
 

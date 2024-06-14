@@ -10,13 +10,14 @@ const createActivity = async (body) => {
     const t = await db.sequelize.transaction();
     logger.info("body", { body });
 
-    const { activity_type, title, description, customer_id } = body;
+    const { activity_type, title, description, customer_id, user_id } = body;
     const activity = await Activity.create(
       {
         activity_type,
         title,
         description,
         customer_id,
+        user_id,
       },
       { transaction: t }
     );
@@ -56,7 +57,7 @@ const getActivityById = async (id) => {
 
 const getActivitiesByCustomerId = async (customerId) => {
   try {
-    logger.info("Getting activity by id, repository");
+    logger.info("Getting activities by id, repository");
     const activities = await Activity.findAll({
       where: {
         customer_id: customerId,
@@ -65,71 +66,57 @@ const getActivitiesByCustomerId = async (customerId) => {
         {
           model: db.Note,
           as: "note",
-          include: [
-            {
-              model: db.User,
-              as: "user",
-              attributes: ["first_name", "last_name"],
-            },
-          ],
-        },
-        {
-          model: db.Task,
-          as: "task",
-          include: [
-            {
-              model: db.User,
-              as: "user",
-              attributes: ["first_name", "last_name"],
-            },
-          ],
         },
         {
           model: db.Meeting,
           as: "meeting",
-          include: [
-            {
-              model: db.User,
-              as: "user",
-              attributes: ["first_name", "last_name"],
-            },
-          ],
+        },
+        {
+          model: db.Task,
+          as: "task",
+        },
+        {
+          model: db.User,
+          as: "user",
         },
       ],
     });
 
-    const formattedActivities = {
-      meetings: [],
-      notes: [],
-      tasks: [],
-    };
+    const formattedActivities = _formatActivities(activities);
+    return formattedActivities;
+  } catch (error) {
+    throw error;
+  }
+};
 
-    activities.forEach((activity) => {
-      const formattedActivity = {
-        id: activity.id,
-        activity_type: activity.activity_type,
-        title: activity.title,
-        description: activity.description,
-        created_at: activity.created_at,
-        customer_id: activity.customer_id,
-        [activity.activity_type]: activity[activity.activity_type],
-      };
-
-      switch (activity.activity_type) {
-        case "meeting":
-          formattedActivities.meetings.push(formattedActivity);
-          break;
-        case "note":
-          formattedActivities.notes.push(formattedActivity);
-          break;
-        case "task":
-          formattedActivities.tasks.push(formattedActivity);
-          break;
-      }
-
-      return formattedActivities;
+const getActivitiesByUserId = async (userId) => {
+  try {
+    logger.info("Getting activities by id, repository");
+    const activities = await Activity.findAll({
+      where: {
+        user_id: userId,
+      },
+      include: [
+        {
+          model: db.Note,
+          as: "note",
+        },
+        {
+          model: db.Meeting,
+          as: "meeting",
+        },
+        {
+          model: db.Task,
+          as: "task",
+        },
+        {
+          model: db.User,
+          as: "user",
+        },
+      ],
     });
 
+    const formattedActivities = _formatActivities(activities);
     return formattedActivities;
   } catch (error) {
     throw error;
@@ -165,11 +152,45 @@ const patchActivity = async (body) => {
   }
 };
 
+const _formatActivities = (activities) => {
+  const formattedActivities = {
+    meetings: [],
+    notes: [],
+    tasks: [],
+  };
+  activities.forEach((activity) => {
+    const formattedActivity = {
+      id: activity.id,
+      activity_type: activity.activity_type,
+      title: activity.title,
+      description: activity.description,
+      created_at: activity.created_at,
+      customer_id: activity.customer_id,
+      user: activity.user,
+      [activity.activity_type]: activity[activity.activity_type],
+    };
+
+    switch (activity.activity_type) {
+      case "meeting":
+        formattedActivities.meetings.push(formattedActivity);
+        break;
+      case "note":
+        formattedActivities.notes.push(formattedActivity);
+        break;
+      case "task":
+        formattedActivities.tasks.push(formattedActivity);
+        break;
+    }
+  });
+  return formattedActivities;
+};
+
 module.exports = {
   createActivity,
   getActivities,
   getActivityById,
   getActivitiesByCustomerId,
+  getActivitiesByUserId,
   deleteActivity,
   patchActivity,
 };

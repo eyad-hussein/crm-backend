@@ -1,4 +1,10 @@
-const { Customer, UserPhoneNumber, Extension } = require("../../db/models");
+const {
+  User,
+  Customer,
+  UserPhoneNumber,
+  Extension,
+  Department,
+} = require("../../db/models");
 const GET_USER_QUERY = {
   attributes: ["id", "first_name", "last_name", "user_name", "email", "title"],
   include: [
@@ -16,6 +22,14 @@ const GET_USER_QUERY = {
           as: "extension",
         },
       ],
+    },
+    {
+      model: Department,
+      as: "department",
+    },
+    {
+      model: User,
+      as: "manager",
     },
   ],
 };

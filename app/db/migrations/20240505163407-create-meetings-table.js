@@ -1,47 +1,26 @@
 "use strict";
-
-const { ActivityType } = require("../../enums");
-
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("activities", {
+    await queryInterface.createTable("meetings", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      activity_type: {
-        type: Sequelize.ENUM,
-        values: ActivityType.values,
-        defaultValue: ActivityType.defaultValue,
-      },
-      title: {
-        type: Sequelize.STRING,
-      },
-      description: {
-        type: Sequelize.TEXT,
-      },
-      customer_id: {
-        type: Sequelize.INTEGER,
+      meeting_date: {
         allowNull: false,
+        type: Sequelize.DATE,
+      },
+      activity_id: {
+        type: Sequelize.INTEGER,
         references: {
-          model: "customers",
+          model: "activities",
           key: "id",
         },
-        onUpdate: "CASCADE",
         onDelete: "CASCADE",
-      },
-      user_id: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: "users",
-          key: "id",
-        },
         onUpdate: "CASCADE",
-        onDelete: "CASCADE",
       },
       created_at: {
         allowNull: false,
@@ -56,6 +35,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("activities");
+    await queryInterface.dropTable("meetings");
   },
 };
