@@ -22,6 +22,7 @@ const {
   tasksRouter,
   meetingsRouter,
   notesRouter,
+  userPhoneNumbersRouter,
 } = require("./app/routes");
 
 const db = require("./app/db/models/index");
@@ -47,6 +48,7 @@ app.use("/extensions", extensionsRouter);
 app.use("/tasks", tasksRouter);
 app.use("/meetings", meetingsRouter);
 app.use("/notes", notesRouter);
+app.use("/user-phone-numbers", userPhoneNumbersRouter);
 
 app.listen(5000, () => {
   logger.info("Server started on port 5000");

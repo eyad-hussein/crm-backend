@@ -15,6 +15,7 @@ const extensionController = require("./Extension.controller");
 const taskController = require("./Task.controller");
 const meetingController = require("./Meeting.controller");
 const noteController = require("./Note.controller");
+const userPhoneNumberController = require("./UserPhoneNumber.controller");
 
 module.exports = {
   customerController,
@@ -34,4 +35,5 @@ module.exports = {
   taskController,
   meetingController,
   noteController,
+  userPhoneNumberController,
 };
