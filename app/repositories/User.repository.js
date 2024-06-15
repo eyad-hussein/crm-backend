@@ -3,8 +3,7 @@ const { GET_USER_QUERY } = require("./queries");
 const models = require("../db/models");
 const logger = require("../utils/Logger");
 const { changeInputToModelName } = require("../utils/Parser.utils");
-const { customerRepository } = require(".");
-
+const { Op } = require("sequelize");
 const createUser = async (body) => {
   try {
     logger.info("Creating user, repository");
@@ -31,6 +30,96 @@ const createUser = async (body) => {
     return user;
   } catch (error) {
     logger.error("Error creating user, repository");
+    throw error;
+  }
+};
+
+const getUsers = async () => {
+  return await User.findAll(GET_USER_QUERY);
+};
+
+const getUsersByFilters = async (filterOptions) => {
+  return await User.findAll({
+    where: filterOptions,
+  });
+};
+
+const getUserById = async (id) => {
+  return await User.findByPk(id, GET_USER_QUERY);
+};
+
+const patchUser = async (id, body) => {
+  try {
+    logger.info("Patching user, repository");
+
+    const t = await models.sequelize.transaction();
+
+    const user = await User.findByPk(id, { transaction: t });
+    await user.update(body, { transaction: t });
+    await t.commit();
+  } catch (error) {
+    logger.error("Error patching user, repository");
+    throw error;
+  }
+};
+
+const deleteUser = async (id) => {
+  await User.destroy({
+    where: {
+      id: id,
+    },
+  });
+};
+
+const searchForUser = async (query) => {
+  try {
+    logger.info("Searching for user, repository");
+    const { query: q } = query;
+    const users = await User.findAll({
+      where: {
+        [Op.or]: [
+          { first_name: { [Op.substring]: q } },
+          { last_name: { [Op.substring]: q } },
+          { email: { [Op.substring]: q } },
+        ],
+      },
+      attributes: [
+        "id",
+        "first_name",
+        "last_name",
+        "user_name",
+        "email",
+        "title",
+      ],
+      include: [
+        {
+          model: models.Customer,
+          attributes: ["id", "name"],
+          as: "customers",
+        },
+        {
+          model: models.UserPhoneNumber,
+          as: "user_phone_numbers",
+          include: [
+            {
+              model: models.Extension,
+              as: "extension",
+            },
+          ],
+        },
+        {
+          model: models.Department,
+          as: "department",
+        },
+        {
+          model: models.User,
+          as: "manager",
+        },
+      ],
+    });
+    return users;
+  } catch (error) {
+    logger.error("Error searching for user, repository");
     throw error;
   }
 };
@@ -79,43 +168,6 @@ const _dealWithUserAssociations = async (
   }
 };
 
-const getUsers = async () => {
-  return await User.findAll(GET_USER_QUERY);
-};
-
-const getUsersByFilters = async (filterOptions) => {
-  return await User.findAll({
-    where: filterOptions,
-  });
-};
-
-const getUserById = async (id) => {
-  return await User.findByPk(id, GET_USER_QUERY);
-};
-
-const patchUser = async (id, body) => {
-  try {
-    logger.info("Patching user, repository");
-
-    const t = await models.sequelize.transaction();
-
-    const user = await User.findByPk(id, { transaction: t });
-    await user.update(body, { transaction: t });
-    await t.commit();
-  } catch (error) {
-    logger.error("Error patching user, repository");
-    throw error;
-  }
-};
-
-const deleteUser = async (id) => {
-  await User.destroy({
-    where: {
-      id: id,
-    },
-  });
-};
-
 module.exports = {
   getUsers,
   getUserById,
@@ -123,4 +175,5 @@ module.exports = {
   deleteUser,
   createUser,
   getUsersByFilters,
+  searchForUser,
 };

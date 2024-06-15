@@ -7,7 +7,7 @@ const industryRepository = require("../repositories/Industry.repository");
 const userRepository = require("../repositories/User.repository");
 const addressRepository = require("../repositories/Address.repository");
 
-const createSearchCriteria = async (searchFilters, query) => {
+const createCustomerSearchCriteria = async (searchFilters, query) => {
   logger.info({
     message: "Creating search criteria",
     searchFilters,
@@ -110,6 +110,42 @@ const createSearchCriteria = async (searchFilters, query) => {
   return searchCriteria;
 };
 
+// const createUserSearchCriteria = async (query) => {
+//   logger.info({
+//     message: "Creating search criteria",
+//     searchFilters,
+//   });
+//   let searchCriteria = {};
+
+//   searchFilters = searchFilters != "undefined" ? searchFilters.split(",") : [];
+
+//   if (!searchFilters.length) {
+//     searchCriteria = {
+//       [Op.or]: [
+//         { first_name: { [Op.substring]: query } },
+//         { last_name: { [Op.substring]: query } },
+//         { email: { [Op.substring]: query } },
+//       ],
+//     };
+//   } else {
+//     searchCriteria = {
+//       [Op.or]: [
+//         searchFilters.includes("first_name") && {
+//           first_name: { [Op.substring]: query },
+//         },
+//         searchFilters.includes("last_name") && {
+//           last_name: { [Op.substring]: query },
+//         },
+//         searchFilters.includes("email") && { email: { [Op.substring]: query } },
+//       ],
+//     };
+
+//     logger.info("search criteria", { searchCriteria });
+//   }
+
+//   return searchCriteria;
+// }
+
 module.exports = {
-  createSearchCriteria,
+  createCustomerSearchCriteria,
 };

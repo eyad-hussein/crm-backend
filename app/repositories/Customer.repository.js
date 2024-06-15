@@ -212,7 +212,7 @@ const searchForCustomer = async (query) => {
   logger.info("query", { query });
   let { query: q, status, searchFilters } = query;
 
-  const searchCriteria = await searchService.createSearchCriteria(
+  const searchCriteria = await searchService.createCustomerSearchCriteria(
     searchFilters,
     q
   );
