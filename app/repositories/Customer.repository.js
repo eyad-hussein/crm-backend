@@ -7,9 +7,8 @@ const logger = require("../utils/Logger");
 const { searchService, filterService, sortService } = require("../services");
 
 const createCustomer = async (body) => {
-  const t = await models.sequelize.transaction();
   try {
-    // Create the customer
+    const t = await models.sequelize.transaction();
     const customer = await Customer.create(body, { transaction: t });
 
     const associations = Customer.associations;
