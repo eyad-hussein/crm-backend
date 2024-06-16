@@ -40,10 +40,15 @@ const patchUser = asyncHandler(async (req, res, next) => {
 });
 
 const deleteUser = asyncHandler(async (req, res, next) => {
-  const { id } = req.params;
-
-  await userRepository.deleteUser(id);
-  res.json({ message: "User and associated models deleted successfully" });
+  try {
+    logger.info("Deleting user, controller");
+    const { id } = req.params;
+    await userRepository.deleteUser(id);
+    res.json({ message: "User and associated models deleted successfully" });
+  } catch (error) {
+    logger.error("Error deleting user, controller");
+    throw error;
+  }
 });
 
 const searchForUser = asyncHandler(async (req, res, next) => {

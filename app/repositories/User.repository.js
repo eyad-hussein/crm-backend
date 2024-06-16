@@ -4,6 +4,7 @@ const models = require("../db/models");
 const logger = require("../utils/Logger");
 const { changeInputToModelName } = require("../utils/Parser.utils");
 const { Op } = require("sequelize");
+
 const createUser = async (body) => {
   try {
     logger.info("Creating user, repository");
@@ -64,11 +65,20 @@ const patchUser = async (id, body) => {
 };
 
 const deleteUser = async (id) => {
-  await User.destroy({
-    where: {
-      id: id,
-    },
-  });
+  try {
+    logger.info("Deleting user, repository");
+    const t = await models.sequelize.transaction();
+    await User.destroy({
+      where: {
+        id: id,
+      },
+      transaction: t,
+    });
+    await t.commit();
+  } catch (error) {
+    logger.error("Error deleting user, repository");
+    throw error;
+  }
 };
 
 const searchForUser = async (query) => {
