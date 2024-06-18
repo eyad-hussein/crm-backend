@@ -16,21 +16,29 @@ const _hashPassword = (password) => {
   });
 };
 
-const registerUser = async (body) => {
+const registerUser = async (req, res) => {
   try {
     logger.info("Registering user, service");
 
+    const { body } = req;
+
     const { password } = body;
-    const hashedPassword = await _hashPassword(password);
+
+    let hashedPassword;
+
+    try {
+      hashedPassword = await _hashPassword(password);
+    } catch (error) {
+      return res.status(500).send("Error registering user");
+    }
 
     body.password = hashedPassword;
 
-    console.log(hashedPassword);
+    await userRepository.createUser(body);
 
-    return await userRepository.createUser(body);
+    return res.status(201).send("User registered");
   } catch (error) {
-    logger.error("Error registering user, service");
-    throw error;
+    return res.status(500).send("Error registering user");
   }
 };
 

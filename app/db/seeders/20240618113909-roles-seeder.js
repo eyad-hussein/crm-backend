@@ -1,7 +1,5 @@
 "use strict";
-
-const { generateAccount } = require("../factories");
-
+const { Roles } = require("../../enums/RoleType.enum");
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -14,8 +12,25 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
      */
-    const accountsData = Array.from({ length: 3 }, generateAccount);
-    return queryInterface.bulkInsert("accounts", accountsData, {});
+
+    await queryInterface.bulkInsert(
+      "roles",
+      [
+        {
+          role_name: Roles.ADMIN,
+          description: "Admin role",
+        },
+        {
+          role_name: Roles.SALES_MANAGER,
+          description: "Sales Manager role",
+        },
+        {
+          role_name: Roles.SALES_REPRESENTATIVE,
+          description: "Sales Rep role",
+        },
+      ],
+      {}
+    );
   },
 
   async down(queryInterface, Sequelize) {
@@ -25,6 +40,7 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
-    return queryInterface.bulkDelete("accounts", null, {});
+
+    await queryInterface.bulkDelete("roles", null, {});
   },
 };

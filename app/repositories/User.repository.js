@@ -1,4 +1,4 @@
-const { User, Customer } = require("../db/models");
+const { User, Customer, UserRole } = require("../db/models");
 const { GET_USER_QUERY } = require("./queries");
 const models = require("../db/models");
 const logger = require("../utils/Logger");
@@ -155,13 +155,23 @@ const _dealWithUserAssociations = async (
       switch (methodType) {
         case "create":
           for (const associatedData of body[association]) {
-            await Model.create(
-              {
-                ...associatedData,
-                user_id: userId,
-              },
-              { transaction: t }
-            );
+            if (association === "roles") {
+              await UserRole.create(
+                {
+                  user_id: userId,
+                  role_id: associatedData,
+                },
+                { transaction: t }
+              );
+            } else {
+              await Model.create(
+                {
+                  ...associatedData,
+                  user_id: userId,
+                },
+                { transaction: t }
+              );
+            }
           }
           break;
         case "update":
