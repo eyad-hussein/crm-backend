@@ -4,11 +4,14 @@ require("dotenv").config();
 const express = require("express");
 const { morganMiddleware } = require("./app/middlewares");
 const logger = require("./app/utils/Logger");
+const cookieParser = require("cookie-parser");
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(morganMiddleware);
+app.use(cookieParser());
+
 const {
   customersRouter,
   usersRouter,

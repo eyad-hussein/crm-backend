@@ -31,6 +31,7 @@ const createActivity = async (body) => {
     t.commit();
     return activity;
   } catch (error) {
+    logger.error("Error creating activity, repository");
     throw error;
   }
 };

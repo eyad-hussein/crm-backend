@@ -3,7 +3,7 @@ const { faker } = require("@faker-js/faker");
 const generateUser = () => ({
   first_name: faker.person.firstName(),
   last_name: faker.person.lastName(),
-  user_name: faker.internet.userName(),
+  username: faker.internet.userName(),
   title: faker.person.jobTitle(),
   email: faker.internet.email(),
   password: faker.internet.password(),

@@ -45,6 +45,12 @@ const getUsersByFilters = async (filterOptions) => {
   });
 };
 
+const getUserByFilters = async (filterOptions) => {
+  return await User.findOne({
+    where: filterOptions,
+  });
+};
+
 const getUserById = async (id) => {
   return await User.findByPk(id, GET_USER_QUERY);
 };
@@ -97,7 +103,7 @@ const searchForUser = async (query) => {
         "id",
         "first_name",
         "last_name",
-        "user_name",
+        "username",
         "email",
         "title",
       ],
@@ -185,5 +191,6 @@ module.exports = {
   deleteUser,
   createUser,
   getUsersByFilters,
+  getUserByFilters,
   searchForUser,
 };

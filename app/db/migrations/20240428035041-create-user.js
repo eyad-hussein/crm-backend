@@ -16,7 +16,7 @@ module.exports = {
       last_name: {
         type: Sequelize.STRING,
       },
-      user_name: {
+      username: {
         type: Sequelize.STRING,
         unique: true,
       },

@@ -6,7 +6,7 @@ const {
   Department,
 } = require("../../db/models");
 const GET_USER_QUERY = {
-  attributes: ["id", "first_name", "last_name", "user_name", "email", "title"],
+  attributes: ["id", "first_name", "last_name", "username", "email", "title"],
   include: [
     {
       model: Customer,

@@ -57,14 +57,19 @@ const deleteActivity = asyncHandler(async (req, res, next) => {
 });
 
 const createActivity = asyncHandler(async (req, res, next) => {
-  const { body } = req;
-  const { customerId } = req.params;
-  body.customer_id = customerId;
-  logger.info("creating activity, controller", { customerId });
+  try {
+    logger.info("Creating activity, controller");
+    const { body } = req;
+    const { customerId } = req.params;
+    body.customer_id = customerId;
 
-  const activity = await activityRepository.createActivity(body);
+    const activity = await activityRepository.createActivity(body);
 
-  res.json(activity);
+    res.json(activity);
+  } catch (error) {
+    logger.error("Error creating activity, controller");
+    throw error;
+  }
 });
 
 module.exports = {
