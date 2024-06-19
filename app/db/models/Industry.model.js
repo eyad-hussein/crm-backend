@@ -17,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
   Industry.init(
     {
       industry_name: DataTypes.STRING,
+      description: DataTypes.TEXT,
     },
     {
       sequelize,

@@ -16,6 +16,9 @@ module.exports = {
       service_cost: {
         type: Sequelize.DOUBLE,
       },
+      description: {
+        type: Sequelize.TEXT,
+      },
       created_at: {
         allowNull: false,
         type: Sequelize.DATE,

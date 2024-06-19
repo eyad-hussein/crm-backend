@@ -1,11 +1,16 @@
-const { generateIndustry } = require("./Industry.factory");
 const { generateCustomer } = require("./Customer.factory");
-const { generateService } = require("./Service.factory");
 const { generateUser } = require("./User.factory");
-
+const { generateCustomerService } = require("./CustomerService.factory");
+const {
+  generateCustomerPhoneNumber,
+} = require("./CustomerPhoneNumber.factory");
+const { generateUserPhoneNumber } = require("./UserPhoneNumber.factory");
+const { generateAddress } = require("./Address.factory");
 module.exports = {
   generateCustomer,
   generateUser,
-  generateService,
-  generateIndustry,
+  generateCustomerService,
+  generateCustomerPhoneNumber,
+  generateUserPhoneNumber,
+  generateAddress,
 };

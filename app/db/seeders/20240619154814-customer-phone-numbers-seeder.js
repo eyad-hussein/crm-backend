@@ -1,5 +1,5 @@
 "use strict";
-const { Roles } = require("../../enums/RoleType.enum");
+const { generateCustomerPhoneNumber } = require("../factories");
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -13,25 +13,13 @@ module.exports = {
      * }], {});
      */
 
+    const customerPhoneNumbers = Array.from({ length: 20 }).map(() =>
+      generateCustomerPhoneNumber()
+    );
+
     await queryInterface.bulkInsert(
-      "roles",
-      [
-        {
-          id: 1,
-          role_name: Roles.ADMIN,
-          description: "Admin role",
-        },
-        {
-          id: 2,
-          role_name: Roles.SALES_MANAGER,
-          description: "Sales Manager role",
-        },
-        {
-          id: 3,
-          role_name: Roles.SALES_REPRESENTATIVE,
-          description: "Sales Rep role",
-        },
-      ],
+      "customer_phone_numbers",
+      customerPhoneNumbers,
       {}
     );
   },
@@ -44,6 +32,6 @@ module.exports = {
      * await queryInterface.bulkDelete('People', null, {});
      */
 
-    await queryInterface.bulkDelete("roles", null, {});
+    await queryInterface.bulkDelete("customer_phone_numbers", null, {});
   },
 };
