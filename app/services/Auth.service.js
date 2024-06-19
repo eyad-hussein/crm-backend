@@ -44,21 +44,22 @@ const registerUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { email, username, password } = req.body;
 
     let user;
 
     try {
       user = await userRepository.getUserByFilters({
         username: username,
+        email: email,
       });
     } catch (error) {
       logger.error("Error getting user, service");
-      throw error;
+      return res.status(500).send("Internal server error");
     }
 
     if (!user) {
-      throw "Invalid credentials";
+      return res.status(401).send("Invalid credentials");
     }
 
     bcrypt.compare(password, user.password, (err, isMatch) => {
@@ -71,7 +72,7 @@ const loginUser = async (req, res) => {
       }
 
       const token = jwt.sign(
-        { id: user.id, username: user.username },
+        { id: user.id, username: user.username, email: user.email },
         jwtSecret,
         { expiresIn: "1h" }
       );
@@ -84,11 +85,11 @@ const loginUser = async (req, res) => {
         sameSite: "Strict",
       });
 
-      res.send("Logged in");
+      res.json({ token });
     });
   } catch (error) {
     logger.error("Error logging in, service");
-    throw error;
+    return res.status(500).send("Internal server error");
   }
 };
 
