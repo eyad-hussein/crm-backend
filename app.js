@@ -4,11 +4,14 @@ require("dotenv").config();
 const express = require("express");
 const { morganMiddleware } = require("./app/middlewares");
 const logger = require("./app/utils/Logger");
+const cookieParser = require("cookie-parser");
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(morganMiddleware);
+app.use(cookieParser());
+
 const {
   customersRouter,
   usersRouter,
@@ -23,6 +26,7 @@ const {
   meetingsRouter,
   notesRouter,
   userPhoneNumbersRouter,
+  authRouter,
 } = require("./app/routes");
 
 const db = require("./app/db/models/index");
@@ -49,6 +53,7 @@ app.use("/tasks", tasksRouter);
 app.use("/meetings", meetingsRouter);
 app.use("/notes", notesRouter);
 app.use("/user-phone-numbers", userPhoneNumbersRouter);
+app.use("/auth", authRouter);
 
 app.listen(5000, () => {
   logger.info("Server started on port 5000");

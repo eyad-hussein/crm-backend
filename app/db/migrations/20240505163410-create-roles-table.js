@@ -1,20 +1,21 @@
 "use strict";
+const { RoleType } = require("../../enums");
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("countries", {
+    await queryInterface.createTable("roles", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      country_name: {
-        type: Sequelize.STRING,
+      role_name: {
+        type: Sequelize.ENUM,
+        values: RoleType.values,
+        defaultValue: RoleType.defaultValue,
       },
-      country_code: {
-        type: Sequelize.STRING,
-      },
+      description: Sequelize.STRING,
       created_at: {
         allowNull: false,
         type: Sequelize.DATE,
@@ -28,6 +29,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("countries");
+    await queryInterface.dropTable("roles");
   },
 };

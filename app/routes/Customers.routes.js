@@ -14,18 +14,19 @@ router.use("/prospects", prospectsRouter);
 router.use("/contacts", contactsRouter);
 router.use("/proposals", proposalsRouter);
 
+router.post("/:customerId/activities", activityController.createActivity);
+
+router.post("/", customerController.createCustomer);
+router.post("/filter", customerController.filterCustomers);
+router.post("/sort", customerController.sortCustomers);
+
 router.get(
   "/:customerId/activities",
   activityController.getActivitiesByCustomerId
 );
-router.post("/:customerId/activities", activityController.createActivity);
-
-router.post("/", customerController.createCustomer);
 
 router.get("/", customerController.getCustomers);
 router.get("/search", customerController.searchForCustomer);
-router.post("/filter", customerController.filterCustomers);
-router.post("/sort", customerController.sortCustomers);
 router.get("/:id", customerController.getCustomerById);
 
 router.patch("/:id", customerController.patchCustomer);

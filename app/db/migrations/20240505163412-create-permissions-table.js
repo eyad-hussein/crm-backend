@@ -1,20 +1,21 @@
 "use strict";
+const { PermissionType } = require("../../enums");
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("countries", {
+    await queryInterface.createTable("permissions", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      country_name: {
-        type: Sequelize.STRING,
+      permission_name: {
+        type: Sequelize.ENUM,
+        values: PermissionType.values,
+        defaultValue: PermissionType.defaultValue,
       },
-      country_code: {
-        type: Sequelize.STRING,
-      },
+      description: Sequelize.STRING,
       created_at: {
         allowNull: false,
         type: Sequelize.DATE,
@@ -28,6 +29,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("countries");
+    await queryInterface.dropTable("permissions");
   },
 };

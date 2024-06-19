@@ -1,6 +1,6 @@
 const logger = require("../utils/Logger");
 const db = require("../db/models");
-const { Activity } = require("../db/models");
+const { Activity, User } = require("../db/models");
 const { changeInputToModelName } = require("../utils/Parser.utils");
 
 const createActivity = async (body) => {
@@ -29,8 +29,16 @@ const createActivity = async (body) => {
       await db[model].create(modelBody, { transaction: t });
     }
     t.commit();
-    return activity;
+    return await Activity.findByPk(activity.id, {
+      include: [
+        {
+          model: User,
+          as: "user",
+        },
+      ],
+    });
   } catch (error) {
+    logger.error("Error creating activity, repository");
     throw error;
   }
 };

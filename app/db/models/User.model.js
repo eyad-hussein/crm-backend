@@ -32,13 +32,18 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "department_id",
         as: "department",
       });
+      User.belongsToMany(models.Role, {
+        through: "user_roles",
+        foreignKey: "user_id",
+        as: "roles",
+      });
     }
   }
   User.init(
     {
       first_name: DataTypes.STRING,
       last_name: DataTypes.STRING,
-      user_name: DataTypes.STRING,
+      username: DataTypes.STRING,
       email: DataTypes.STRING,
       password: DataTypes.STRING,
       title: DataTypes.STRING,

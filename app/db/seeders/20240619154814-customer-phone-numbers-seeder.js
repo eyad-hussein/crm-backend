@@ -1,5 +1,5 @@
 "use strict";
-
+const { generateCustomerPhoneNumber } = require("../factories");
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -12,9 +12,16 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
      */
-    const countriesData = [{ country_name: "USA" }, { country_name: "Egypt" }];
 
-    return await queryInterface.bulkInsert("countries", countriesData, {});
+    const customerPhoneNumbers = Array.from({ length: 20 }).map(() =>
+      generateCustomerPhoneNumber()
+    );
+
+    await queryInterface.bulkInsert(
+      "customer_phone_numbers",
+      customerPhoneNumbers,
+      {}
+    );
   },
 
   async down(queryInterface, Sequelize) {
@@ -25,6 +32,6 @@ module.exports = {
      * await queryInterface.bulkDelete('People', null, {});
      */
 
-    return await queryInterface.bulkDelete("countries", null, {});
+    await queryInterface.bulkDelete("customer_phone_numbers", null, {});
   },
 };

@@ -7,6 +7,7 @@ router.get("/:userId/activities", activityController.getActivitiesByUserId);
 
 router.post("/", userController.createUser);
 
+router.get("/search", userController.searchForUser);
 router.get("/", userController.getUsers);
 router.get("/:id", userController.getUserById);
 

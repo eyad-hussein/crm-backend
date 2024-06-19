@@ -1,7 +1,5 @@
 "use strict";
-
 const { generateUser } = require("../factories");
-
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -14,8 +12,12 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
      */
-    const usersData = Array.from({ length: 3 }, generateUser);
-    return await queryInterface.bulkInsert("users", usersData, {});
+
+    const users = await Promise.all(
+      Array.from({ length: 10 }, () => generateUser())
+    );
+
+    await queryInterface.bulkInsert("users", users, {});
   },
 
   async down(queryInterface, Sequelize) {
@@ -25,6 +27,6 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
-    return await queryInterface.bulkDelete("users", null, {});
+    await queryInterface.bulkDelete("users", null, {});
   },
 };

@@ -2,18 +2,30 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("countries", {
+    await queryInterface.createTable("role_permissions", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      country_name: {
-        type: Sequelize.STRING,
+      role_id: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "roles",
+          key: "id",
+        },
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
       },
-      country_code: {
-        type: Sequelize.STRING,
+      permission_id: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "permissions",
+          key: "id",
+        },
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
       },
       created_at: {
         allowNull: false,
@@ -28,6 +40,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("countries");
+    await queryInterface.dropTable("role_permissions");
   },
 };

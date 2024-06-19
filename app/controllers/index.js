@@ -16,6 +16,7 @@ const taskController = require("./Task.controller");
 const meetingController = require("./Meeting.controller");
 const noteController = require("./Note.controller");
 const userPhoneNumberController = require("./UserPhoneNumber.controller");
+const authController = require("./Auth.controller");
 
 module.exports = {
   customerController,
@@ -36,4 +37,5 @@ module.exports = {
   meetingController,
   noteController,
   userPhoneNumberController,
+  authController,
 };

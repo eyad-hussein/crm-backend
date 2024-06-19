@@ -1,7 +1,5 @@
 "use strict";
-
-const { generateCustomer } = require("../factories");
-
+const { generateCustomerService } = require("../factories");
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -14,8 +12,12 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
      */
-    const customersData = Array.from({ length: 3 }, generateCustomer);
-    return await queryInterface.bulkInsert("customers", customersData, {});
+
+    const customerServices = Array.from({ length: 10 }, () =>
+      generateCustomerService()
+    );
+
+    await queryInterface.bulkInsert("customer_services", customerServices, {});
   },
 
   async down(queryInterface, Sequelize) {
@@ -25,6 +27,7 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
-    return await queryInterface.bulkDelete("customers", null, {});
+
+    await queryInterface.bulkDelete("customer_services", null, {});
   },
 };
