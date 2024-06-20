@@ -17,6 +17,7 @@ const meetingController = require("./Meeting.controller");
 const noteController = require("./Note.controller");
 const userPhoneNumberController = require("./UserPhoneNumber.controller");
 const authController = require("./Auth.controller");
+const serviceController = require("./Service.controller");
 
 module.exports = {
   customerController,
@@ -38,4 +39,5 @@ module.exports = {
   noteController,
   userPhoneNumberController,
   authController,
+  serviceController,
 };

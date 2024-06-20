@@ -6,9 +6,18 @@ const { Op } = require("sequelize");
 const logger = require("../utils/Logger");
 const { searchService, filterService, sortService } = require("../services");
 
-const createCustomer = async (body) => {
+const getCustomers = async () => {
+  return await Customer.findAll(GET_CUSTOMER_QUERY);
+};
+
+const getCustomerById = async (id) => {
+  return await Customer.findByPk(id, GET_CUSTOMER_QUERY);
+};
+
+const createCustomer = async (body, transaction) => {
   try {
-    const t = await models.sequelize.transaction();
+    const t = transaction || (await models.sequelize.transaction());
+
     const customer = await Customer.create(body, { transaction: t });
 
     const associations = Customer.associations;
@@ -51,14 +60,6 @@ const createCustomer = async (body) => {
   }
 };
 
-const getCustomers = async () => {
-  return await Customer.findAll(GET_CUSTOMER_QUERY);
-};
-
-const getCustomerById = async (id) => {
-  return await Customer.findByPk(id, GET_CUSTOMER_QUERY);
-};
-
 const patchCustomer = async (id, body) => {
   const t = await models.sequelize.transaction();
 
@@ -77,16 +78,10 @@ const patchCustomer = async (id, body) => {
         const modelName = changeInputToModelName(association);
         const Model = models[modelName];
 
-        for (const associatedData of body[association]) {
-          if (association === "services") {
-            await CustomerService.update(
-              { service_id: associatedData.service_id },
-              {
-                where: { customer_id: id, service_id: associatedData.id },
-                transaction: t,
-              }
-            );
-          } else {
+        if (association === "services") {
+          await _updateCustomerServices(customer.id, body[association], t);
+        } else {
+          for (const associatedData of body[association]) {
             await Model.update(associatedData, {
               where: { id: associatedData.id },
               transaction: t,
@@ -114,51 +109,12 @@ const putCustomer = async (id, body) => {
       throw new Error("Customer not found");
     }
 
-    await customer.update(body, { transaction: t });
+    await customer.destroy({ transaction: t });
 
-    const associations = Customer.associations;
-
-    for (const association of Object.keys(associations)) {
-      if (body[association]) {
-        const modelName = changeInputToModelName(association);
-        const Model = models[modelName];
-
-        if (association === "services") {
-          await CustomerService.destroy({
-            where: { customer_id: id },
-            transaction: t,
-          });
-        } else {
-          await Model.destroy({
-            where: { customer_id: id },
-            transaction: t,
-          });
-        }
-
-        for (const associatedData of body[association]) {
-          if (association === "services") {
-            await CustomerService.create(
-              {
-                customer_id: id,
-                service_id: associatedData,
-              },
-              { transaction: t }
-            );
-          } else {
-            await Model.create(
-              {
-                ...associatedData,
-                customer_id: id,
-              },
-              { transaction: t }
-            );
-          }
-        }
-      }
-    }
-
+    const newCustomer = await createCustomer(body, t);
     await t.commit();
-    return customer;
+
+    return newCustomer;
   } catch (error) {
     await t.rollback();
     console.error("Error putting customer:", error);
@@ -259,6 +215,36 @@ const sortCustomers = async (body) => {
     logger.error("Error sorting customers:");
     throw error;
   }
+};
+
+const _updateCustomerServices = async (customerId, services, transaction) => {
+  const currentServices = await CustomerService.findAll({
+    where: { customer_id: customerId },
+    transaction: transaction,
+  });
+
+  const currentServiceIds = currentServices.map(
+    (service) => service.service_id
+  );
+
+  const servicesToAdd = services.filter(
+    (serviceId) => !currentServiceIds.includes(serviceId)
+  );
+  const servicesToRemove = currentServiceIds.filter(
+    (serviceId) => !services.includes(serviceId)
+  );
+
+  for (const serviceId of servicesToAdd) {
+    await CustomerService.create(
+      { customer_id: customerId, service_id: serviceId },
+      { transaction: transaction }
+    );
+  }
+
+  await CustomerService.destroy({
+    where: { customer_id: customerId, service_id: servicesToRemove },
+    transaction: transaction,
+  });
 };
 
 module.exports = {

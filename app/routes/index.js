@@ -17,6 +17,7 @@ const meetingsRouter = require("./Meetings.routes");
 const notesRouter = require("./Notes.routes");
 const userPhoneNumbersRouter = require("./UserPhoneNumbers.routes");
 const authRouter = require("./Auth.routes");
+const servicesRouter = require("./Services.routes");
 
 module.exports = {
   customersRouter,
@@ -38,4 +39,5 @@ module.exports = {
   notesRouter,
   userPhoneNumbersRouter,
   authRouter,
+  servicesRouter,
 };

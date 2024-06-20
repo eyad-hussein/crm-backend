@@ -134,12 +134,17 @@ const getActivitiesByUserId = async (userId) => {
 const deleteActivity = async (activityId) => {
   try {
     logger.info("Deleting activity by customer id, repository");
-
-    return await Activity.destroy({
-      where: {
-        id: activityId,
+    const t = await db.sequelize.transaction();
+    await Activity.destroy(
+      {
+        where: {
+          id: activityId,
+        },
       },
-    });
+      { transaction: t }
+    );
+    t.commit();
+    return "Activity and associated models deleted successfully";
   } catch (error) {
     throw error;
   }
@@ -152,7 +157,6 @@ const patchActivity = async (body) => {
     return await Activity.update(body, {
       where: {
         id: body.id,
-        customer_id: body.customer_id,
       },
     });
   } catch (error) {

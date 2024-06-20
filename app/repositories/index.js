@@ -17,6 +17,7 @@ const taskRepository = require("./Task.repository");
 const meetingRepository = require("./Meeting.repository");
 const noteRepository = require("./Note.repository");
 const userPhoneNumberRepository = require("./UserPhoneNumber.repository");
+const serviceRepository = require("./Service.repository");
 
 module.exports = {
   customerRepository,
@@ -38,4 +39,5 @@ module.exports = {
   meetingRepository,
   noteRepository,
   userPhoneNumberRepository,
+  serviceRepository,
 };

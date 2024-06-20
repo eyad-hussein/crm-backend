@@ -10,6 +10,7 @@ const buildQuery = (customerIds, sortParams) => {
         a.postal_code,
         co.country_name,
         s.state_name,
+        c.city_name,
         ROW_NUMBER() OVER (PARTITION BY a.customer_id ORDER BY a.customer_id) AS rn
     FROM 
         addresses a
@@ -17,6 +18,8 @@ const buildQuery = (customerIds, sortParams) => {
         countries co ON a.country_id = co.id
     LEFT JOIN 
         states s ON a.state_id = s.id
+    LEFT JOIN
+        cities c ON a.city_id = c.id
     ),
     FirstPhoneNumber AS (
     SELECT 
@@ -38,6 +41,7 @@ const buildQuery = (customerIds, sortParams) => {
     c.lead_source,
     fa.country_name,
     fa.state_name,
+    fa.city_name,
     fa.address_line_1,
     fa.address_line_2,
     fa.postal_code,
@@ -105,7 +109,7 @@ const _populateQuery = (query, sortParams) => {
         }, `;
         break;
       case SortingCategoryType.CITY:
-        query += `fa.address_line_1 ${
+        query += `fa.city_name ${
           sortParams[key].selectedOption === "Ascending" ? "ASC" : "DESC"
         }, `;
         break;

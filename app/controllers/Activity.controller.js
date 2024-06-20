@@ -35,10 +35,9 @@ const getActivitiesByUserId = asyncHandler(async (req, res, next) => {
 });
 
 const patchActivity = asyncHandler(async (req, res, next) => {
-  const { customerId, id } = req.params;
+  const { id } = req.params;
   const { body } = req;
 
-  body.customer_id = customerId;
   body.id = id;
 
   await activityRepository.patchActivity(body);
