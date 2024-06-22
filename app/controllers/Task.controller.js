@@ -1,6 +1,7 @@
 const { taskRepository } = require("../repositories");
 
 const asyncHandler = require("express-async-handler");
+const logger = require("../utils/Logger");
 
 const getTasks = asyncHandler(async (req, res, next) => {
   res.json(await taskRepository.getTasks());
@@ -27,12 +28,18 @@ const putTask = asyncHandler(async (req, res, next) => {
 });
 
 const deleteTask = asyncHandler(async (req, res, next) => {
-  const { id } = req.params;
+  try {
+    logger.info("Deleting task, controller");
+    const { id } = req.params;
 
-  await taskRepository.deleteTask(id);
-  res.json({
-    message: "Task and associated models deleted successfully",
-  });
+    await taskRepository.deleteTask(id);
+    res.json({
+      message: "Task and associated models deleted successfully",
+    });
+  } catch (error) {
+    logger.error("Error deleting task, controller");
+    throw error;
+  }
 });
 
 const createTask = asyncHandler(async (req, res, next) => {

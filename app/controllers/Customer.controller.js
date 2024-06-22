@@ -35,11 +35,19 @@ const patchCustomer = asyncHandler(async (req, res, next) => {
 });
 
 const putCustomer = asyncHandler(async (req, res, next) => {
-  const { id } = req.params;
-  const { body } = req;
+  try {
+    logger.info("putting customer, controller");
+    const { id } = req.params;
+    const { body } = req;
 
-  await customerRepository.putCustomer(id, body);
-  res.json({ message: "Customer and associated models updated successfully" });
+    await customerRepository.putCustomer(id, body);
+    res.json({
+      message: "Customer and associated models updated successfully",
+    });
+  } catch (error) {
+    logger.error("error putting customer, controller");
+    throw error;
+  }
 });
 
 const deleteCustomer = asyncHandler(async (req, res, next) => {

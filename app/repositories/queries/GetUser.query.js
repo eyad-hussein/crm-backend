@@ -5,8 +5,17 @@ const {
   Extension,
   Department,
 } = require("../../db/models");
+
 const GET_USER_QUERY = {
-  attributes: ["id", "first_name", "last_name", "username", "email", "title"],
+  attributes: [
+    "id",
+    "first_name",
+    "last_name",
+    "username",
+    "email",
+    "title",
+    "gender",
+  ],
   include: [
     {
       model: Customer,
