@@ -45,10 +45,17 @@ const getUsersByFilters = async (filterOptions) => {
   });
 };
 
-const getUserByFilters = async (filterOptions) => {
-  return await User.findOne({
-    where: filterOptions,
-  });
+const getUserByFilters = async (filterOptions, options) => {
+  try {
+    logger.info("Getting user by filters, repository");
+    return await User.findOne({
+      where: filterOptions,
+      ...options,
+    });
+  } catch (error) {
+    logger.error("Error getting user by filters, repository");
+    throw error;
+  }
 };
 
 const getUserById = async (id) => {

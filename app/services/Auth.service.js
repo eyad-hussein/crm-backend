@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const jwtSecret = process.env.JWT_SECRET;
 const logger = require("../utils/Logger");
 const userRepository = require("../repositories/User.repository");
+const db = require("../db/models");
 
 const _hashPassword = (password) => {
   return new Promise((resolve, reject) => {
@@ -49,10 +50,28 @@ const loginUser = async (req, res) => {
     let user;
 
     try {
-      user = await userRepository.getUserByFilters({
-        username: username,
-        email: email,
-      });
+      user = await userRepository.getUserByFilters(
+        {
+          username: username,
+          email: email,
+        },
+        {
+          attributes: [
+            "id",
+            "username",
+            "email",
+            "password",
+            "first_name",
+            "last_name",
+          ],
+          include: {
+            model: db.Role,
+            as: "roles",
+            through: "user_roles",
+            attributes: ["role_name"],
+          },
+        }
+      );
     } catch (error) {
       logger.error("Error getting user, service");
       return res.status(500).send("Internal server error");
@@ -74,7 +93,7 @@ const loginUser = async (req, res) => {
       const token = jwt.sign(
         { id: user.id, username: user.username, email: user.email },
         jwtSecret,
-        { expiresIn: "1h" }
+        { expiresIn: "7d" }
       );
 
       logger.info(token);
@@ -85,7 +104,35 @@ const loginUser = async (req, res) => {
         sameSite: "Strict",
       });
 
-      res.json({ token });
+      res.cookie(
+        "user",
+        {
+          id: user.id,
+          username: user.username,
+          email: user.email,
+          first_name: user.first_name,
+          last_name: user.last_name,
+          roles: user.roles.map((role) => role.role_name),
+        },
+        {
+          httpOnly: true,
+          secure: true,
+          sameSite: "Strict",
+        }
+      );
+
+      return res.status(200).json({
+        message: "User logged in",
+        token,
+        user: {
+          id: user.id,
+          username: user.username,
+          email: user.email,
+          first_name: user.first_name,
+          last_name: user.last_name,
+          roles: user.roles.map((role) => role.role_name),
+        },
+      });
     });
   } catch (error) {
     logger.error("Error logging in, service");
