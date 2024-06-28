@@ -28,6 +28,7 @@ const {
   userPhoneNumbersRouter,
   authRouter,
   servicesRouter,
+  packagesRouter,
 } = require("./app/routes");
 
 const db = require("./app/db/models/index");
@@ -56,6 +57,7 @@ app.use("/notes", notesRouter);
 app.use("/user-phone-numbers", userPhoneNumbersRouter);
 app.use("/auth", authRouter);
 app.use("/services", servicesRouter);
+app.use("/packages", packagesRouter);
 
 app.listen(5000, () => {
   logger.info("Server started on port 5000");
