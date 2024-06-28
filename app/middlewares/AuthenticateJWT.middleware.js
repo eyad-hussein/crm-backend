@@ -4,26 +4,25 @@ const jwtSecret = process.env.JWT_SECRET;
 
 const authenticateJWT = (req, res, next) => {
   logger.info("Authenticating JWT");
-  console.log(req.headers);
 
   const authHeader = req.header("Authorization");
 
-  console.log("Auth Header:", authHeader);
-
   if (!authHeader) {
-    return res.status(401).send("Access denied");
+    logger.error("No auth header");
+    return res.status(401).send("Access denied: No auth header");
   }
 
   try {
     const token = authHeader.split(" ")[1];
 
-    console.log("Token:", token);
     if (!token) {
-      return res.status(401).send("Access denied");
+      logger.error("No token provided");
+      return res.status(401).send("Access denied: No token provided");
     }
 
     jwt.verify(token, jwtSecret, (err, user) => {
       if (err) {
+        logger.error("Invalid token");
         return res.status(403).send("Invalid token");
       }
 

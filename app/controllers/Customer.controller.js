@@ -51,10 +51,18 @@ const putCustomer = asyncHandler(async (req, res, next) => {
 });
 
 const deleteCustomer = asyncHandler(async (req, res, next) => {
-  const { id } = req.params;
+  try {
+    logger.info("deleting customer, controller");
+    const { id } = req.params;
 
-  await customerRepository.deleteCustomer(id);
-  res.json({ message: "Customer and associated models deleted successfully" });
+    await customerRepository.deleteCustomer(id);
+    res.json({
+      message: "Customer and associated models deleted successfully",
+    });
+  } catch (error) {
+    logger.error("error deleting customer, controller");
+    throw error;
+  }
 });
 
 const createCustomer = asyncHandler(async (req, res, next) => {

@@ -5,6 +5,7 @@ const { changeInputToModelName } = require("../utils/Parser.utils");
 const { Op } = require("sequelize");
 const logger = require("../utils/Logger");
 const { searchService, filterService, sortService } = require("../services");
+const { singularize } = require("sequelize/lib/utils");
 
 const getCustomers = async () => {
   return await Customer.findAll(GET_CUSTOMER_QUERY);
@@ -61,14 +62,14 @@ const createCustomer = async (body, transaction) => {
 };
 
 const patchCustomer = async (id, body) => {
-  const t = await models.sequelize.transaction();
-
   try {
+    logger.info("Patching customer status, repository");
+    const t = await models.sequelize.transaction();
     const customer = await Customer.findByPk(id, { transaction: t });
     if (!customer) {
       throw new Error("Customer not found");
     }
-
+    body.status = singularize(body.status);
     await customer.update(body, { transaction: t });
 
     const associations = Customer.associations;
@@ -94,8 +95,7 @@ const patchCustomer = async (id, body) => {
     await t.commit();
     return customer;
   } catch (error) {
-    await t.rollback();
-    console.error("Error patching customer:", error);
+    logger.error("Error patching customer");
     throw error;
   }
 };

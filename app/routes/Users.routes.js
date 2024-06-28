@@ -11,7 +11,7 @@ router.get("/:userId/activities", activityController.getActivitiesByUserId);
 router.post("/", authorizeRoles(["admin"]), userController.createUser);
 
 router.get("/search", authorizeRoles(["admin"]), userController.searchForUser);
-router.get("/", authorizeRoles(["admin"]), userController.getUsers);
+router.get("/", userController.getUsers);
 router.get("/:id", authorizeRoles(["admin"]), userController.getUserById);
 
 router.patch("/:id", authorizeRoles(["admin"]), userController.patchUser);

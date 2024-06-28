@@ -2,7 +2,7 @@ const SortingCategoryType = {
   NAME: "name",
   DATE: "date",
   STATUS: "status",
-  SERVICE: "service",
+  PACKAGE: "package",
   LEAD_SOURCE: "lead_source",
   PHONE_NUMBER: "phone_number",
   EMAIL: "email",

@@ -3,6 +3,7 @@ const logger = require("../utils/Logger");
 
 const authorizeRoles = (...roles) => {
   return async (req, res, next) => {
+    logger.info("Checking authorization... ");
     const userParsed = JSON.parse(req.headers.user);
     const user = await db.User.findByPk(userParsed.id);
 
