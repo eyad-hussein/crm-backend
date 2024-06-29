@@ -8,9 +8,10 @@ router.post("/register", authController.register);
 
 router.post("/login", authController.login);
 
-router.post("/logout", authController.logout);
+router.post("/logout", authenticateJWT, authController.logout);
 
 router.post("/verify-token", authenticateJWT);
-router.post("/test", authorizeRoles("admin"), authController.test);
+
+router.post("/test", authorizeRoles(["admin"]), authController.test);
 
 module.exports = router;

@@ -1,6 +1,8 @@
 const logger = require("../utils/Logger");
 
-const { FollowUp } = require("../db/models");
+const { FollowUp, Customer } = require("../db/models");
+
+const { GET_CUSTOMER_QUERY } = require("./queries");
 
 const createFollowUp = async (body) => {
   try {
@@ -13,8 +15,17 @@ const createFollowUp = async (body) => {
 
 const getFollowUps = async () => {
   try {
-    logger.info("Getting follow ups, repository");
-    return await FollowUp.findAll();
+    logger.info("Getting followUps, repository");
+
+    return await FollowUp.findAll({
+      include: [
+        {
+          model: Customer,
+          as: "customer",
+          ...GET_CUSTOMER_QUERY,
+        },
+      ],
+    });
   } catch (error) {
     throw error;
   }

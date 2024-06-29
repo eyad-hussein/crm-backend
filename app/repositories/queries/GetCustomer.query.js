@@ -2,8 +2,7 @@ const {
   CustomerPhoneNumber,
   User,
   Industry,
-  Service,
-  Activity,
+  Package,
   Address,
 } = require("../../db/models");
 
@@ -12,8 +11,7 @@ const GET_CUSTOMER_QUERY = {
     { model: CustomerPhoneNumber, as: "customer_phone_numbers" },
     { model: User, as: "user" },
     { model: Industry, as: "industry" },
-    { model: Service, as: "services" },
-    // { model: Activity, as: "activities" },
+    { model: Package, as: "package" },
     { model: Address, as: "addresses", include: ["city", "state", "country"] },
   ],
 };

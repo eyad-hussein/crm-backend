@@ -35,6 +35,11 @@ module.exports = (sequelize, DataTypes) => {
         as: "services",
       });
 
+      Customer.belongsTo(models.Package, {
+        foreignKey: "package_id",
+        as: "package",
+      });
+
       Customer.belongsTo(models.User, {
         foreignKey: "user_id",
         as: "user",

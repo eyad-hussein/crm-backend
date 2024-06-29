@@ -19,8 +19,10 @@ const logout = async (req, res, next) => {
 
 const test = async (req, res, next) => {
   logger.info("testing user, controller");
+  console.log(req);
   res.status(200).send("You are authenticated");
 };
+
 module.exports = {
   register,
   login,

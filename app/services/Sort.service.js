@@ -42,12 +42,15 @@ const buildQuery = (customerIds, sortParams) => {
     fa.country_name,
     fa.state_name,
     fa.city_name,
+    p.package_name,
     fa.address_line_1,
     fa.address_line_2,
     fa.postal_code,
     fp.phone_number
     FROM 
     customers c
+    LEFT JOIN
+    packages p ON c.package_id = p.id
     LEFT JOIN 
     FirstAddress fa ON c.id = fa.customer_id AND fa.rn = 1
     LEFT JOIN 
@@ -88,8 +91,8 @@ const _populateQuery = (query, sortParams) => {
           sortParams[key].selectedOption === "Ascending" ? "ASC" : "DESC"
         }, `;
         break;
-      case SortingCategoryType.SERVICE:
-        query += `c.service ${
+      case SortingCategoryType.PACKAGE:
+        query += `p.package_name ${
           sortParams[key].selectedOption === "Ascending" ? "ASC" : "DESC"
         }, `;
         break;
