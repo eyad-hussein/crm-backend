@@ -1,6 +1,8 @@
 const logger = require("../utils/Logger");
 
-const { Proposal } = require("../db/models");
+const { Proposal, Customer } = require("../db/models");
+
+const { GET_CUSTOMER_QUERY } = require("./queries");
 
 const createProposal = async (body) => {
   try {
@@ -14,7 +16,16 @@ const createProposal = async (body) => {
 const getProposals = async () => {
   try {
     logger.info("Getting proposals, repository");
-    return await Proposal.findAll();
+
+    return await Proposal.findAll({
+      include: [
+        {
+          model: Customer,
+          as: "customer",
+          ...GET_CUSTOMER_QUERY,
+        },
+      ],
+    });
   } catch (error) {
     throw error;
   }

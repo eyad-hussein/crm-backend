@@ -55,7 +55,6 @@ const createCustomer = async (body, transaction) => {
     await t.commit();
     return customer;
   } catch (error) {
-    await t.rollback();
     console.error("Error creating customer:", error);
     throw error;
   }
